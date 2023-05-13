@@ -1,9 +1,9 @@
 package ping.mc.game.item;
 
-import ping.mc.game.item.type.Type;
-import ping.mc.game.rarity.Rarity;
 import org.bukkit.Material;
 import org.json.simple.JSONObject;
+import ping.mc.game.item.type.Type;
+import ping.mc.game.rarity.Rarity;
 
 public class GameItemBase {
     private String id="DEFAULT_ITEM";
@@ -20,11 +20,6 @@ public class GameItemBase {
 
     public String getId() {
         return id;
-    }
-
-    public GameItemBase setId(String id) {
-        this.id = id;
-        return this;
     }
 
     public Material getMaterial() {
