@@ -1,24 +1,28 @@
 package ping.mc.game.item.type;
 
-public enum Type {
-    ITEM("Item", 0),
-    MATERIAL("Material", 1),
-    SWORD("Sword", 2),
-    AXE("Axe",3),
-    PICKAXE("Pickaxe",4),
-    SHOVEL("Shovel", 5),
-    HOE("Hoe", 6),
-    SHEARS("Shears", 7),
-    DRILL("Drill",8),
-    SPEAR("Spear", 9),
-    LONGSWORD("Longsword", 10),
-    ACCESSORY("Accessory", 11),
-    TALISMAN("Talisman", 12),
-    ;
-    String name="Item";
-    int id=0;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
-    Type(String name, int id) {
+import java.util.ArrayList;
+import java.util.List;
+
+public class Type {
+    String name="Item";
+    String id="ITEM";
+    List<String> tags=new ArrayList<>();
+
+    public Type() {
+    }
+    public Type(JSONObject jsonObject) {
+        id= (String) jsonObject.getOrDefault("id","ITEM");
+        name= (String) jsonObject.getOrDefault("nale","COMMON");
+        if (jsonObject.get("tags")!=null){
+            JSONArray tagList= (JSONArray) jsonObject.get("tags");
+            tags.addAll(tagList);
+        }
+    }
+
+    public Type(String name, String id) {
         this.name = name;
         this.id = id;
     }

@@ -1,27 +1,25 @@
 package ping.mc.game.rarity;
 
-public enum  Rarity {
-    COMMON("Common","§f",0),
-    UNCOMMON("Uncommon","§a", 1),
-    RARE("Rare", "§1", 2),
-    EPIC("Epic", "§5", 3),
-    LEGENDARY("Legendary", "§6", 4),
-    MYTHICAL("Mythic", "§d", 5),
-    ANCIENT("Ancient", "§2", 6),
+import org.json.simple.JSONObject;
 
-    EXOTIC("Exotic", "§b", 9),
-    SPECIAL("Special", "§c", 9),
-    ILLEGAL("Illegal", "§4", 9);
+public class  Rarity {
+    private String id="COMMON";
     private String name="Common";
     private String effect = "§f";
     int rank=0;
-    Rarity(){}
-    Rarity(String name, String effect, int rank) {
+    public Rarity(){}
+    public Rarity(JSONObject jsonObject){
+        id= (String) jsonObject.getOrDefault("id","COMMON");
+        name= (String) jsonObject.getOrDefault("name","Common");
+        effect= (String) jsonObject.getOrDefault("effect","§f");
+        rank= (Integer) jsonObject.getOrDefault("rank",0);
+    }
+    public Rarity(String name, String effect, int rank) {
         this.name = name;
         this.effect = effect;
         this.rank = rank;
     }
-    Rarity(String name, String effect) {
+    public Rarity(String name, String effect) {
         this.name = name;
         this.effect = effect;
     }
@@ -51,5 +49,13 @@ public enum  Rarity {
     public Rarity setRank(int rank) {
         this.rank = rank;
         return this;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

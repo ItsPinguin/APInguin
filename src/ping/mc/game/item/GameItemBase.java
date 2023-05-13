@@ -10,8 +10,8 @@ public class GameItemBase {
     private Material material=Material.STICK;
     private String name="Default Item";
     private String description =null;
-    private Rarity rarity=Rarity.COMMON;
-    private Type type=Type.ITEM;
+    private Rarity rarity=new Rarity();
+    private Type type=new Type();
     private String itemBuilder="default";
 
     public GameItemBase(){}
