@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="nbtapi2">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../dependencies/nbtapi2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

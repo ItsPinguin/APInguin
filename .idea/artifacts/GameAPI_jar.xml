@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="GameAPI:jar">
+    <output-path>$PROJECT_DIR$/../../outputs</output-path>
+    <root id="archive" name="GameAPI.jar">
+      <element id="module-output" name="GameMaker" />
+    </root>
+  </artifact>
+</component>
