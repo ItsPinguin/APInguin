@@ -11,7 +11,8 @@ public class Type {
     String id="ITEM";
     List<String> tags=new ArrayList<>();
 
-    public Type() {
+    public Type(String id) {
+        this.id=id;
     }
     public Type(JSONObject jsonObject) {
         id= (String) jsonObject.getOrDefault("id","ITEM");

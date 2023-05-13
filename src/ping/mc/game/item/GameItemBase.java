@@ -10,11 +10,13 @@ public class GameItemBase {
     private Material material=Material.STICK;
     private String name="Default Item";
     private String description =null;
-    private Rarity rarity=new Rarity();
-    private Type type=new Type();
+    private Rarity rarity=new Rarity("COMMON");
+    private Type type=new Type("ITEM");
     private String itemBuilder="default";
 
-    public GameItemBase(){}
+    public GameItemBase(String id){
+        this.id=id;
+    }
     public GameItemBase(JSONObject jsonObject){
     }
 

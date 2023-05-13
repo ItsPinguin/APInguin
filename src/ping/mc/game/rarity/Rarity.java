@@ -7,7 +7,9 @@ public class  Rarity {
     private String name="Common";
     private String effect = "§f";
     int rank=0;
-    public Rarity(){}
+    public Rarity(String id){
+        this.id=id;
+    }
     public Rarity(JSONObject jsonObject){
         id= (String) jsonObject.getOrDefault("id","COMMON");
         name= (String) jsonObject.getOrDefault("name","Common");
