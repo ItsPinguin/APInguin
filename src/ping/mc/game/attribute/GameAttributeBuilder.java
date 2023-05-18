@@ -7,9 +7,6 @@ public interface GameAttributeBuilder {
         GameAttribute attribute=gameAttributeModifier.getAttribute();
         String value=StringUtils.valueToString(gameAttributeModifier.getValue());
         switch (gameAttributeModifier.getOperation()){
-            case ADD -> {
-                return attribute.getEffect()+value+attribute.getSymbol();
-            }
             case ADD_PERCENT -> {
                 return attribute.getEffect()+value+"%"+attribute.getSymbol();
             }
