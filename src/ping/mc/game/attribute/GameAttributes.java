@@ -25,4 +25,8 @@ public class GameAttributes {
     public static void setAttributeBuilder(GameAttributeBuilder attributeBuilder) {
         GameAttributes.attributeBuilder = attributeBuilder;
     }
+
+    public static HashMap<String, GameAttribute> getAttributes() {
+        return attributes;
+    }
 }

@@ -4,6 +4,7 @@ import org.bukkit.Material;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import ping.mc.game.attribute.GameAttributeModifier;
+import ping.mc.game.attribute.GameAttributes;
 import ping.mc.game.item.type.Type;
 import ping.mc.game.rarity.Rarity;
 
@@ -33,7 +34,13 @@ public class GameItemBase {
         type= (Type) jsonObject.getOrDefault("type", type);
         itemBuilder= (String) jsonObject.getOrDefault("item_builder",itemBuilder);
         if (jsonObject.get("attributes")!=null){
-            attributes.addAll(((JSONArray) jsonObject.get("attributes")));
+            for (Object o : ((JSONArray) jsonObject.get("attributes"))) {
+                JSONObject jsono= ((JSONObject) o);
+                attributes.add(new GameAttributeModifier(
+                        GameAttributeModifier.Operation.valueOf((String) jsono.getOrDefault("operation","ADD")),
+                        GameAttributes.getAttribute((String) jsono.getOrDefault("attribute","DEFAULT_ATTRIBUTE")))
+                );
+            }
         }
         if (jsonObject.get("tags")!=null){
             tags.addAll(((JSONArray) jsonObject.get("tags")));
@@ -101,15 +108,17 @@ public class GameItemBase {
         return attributes;
     }
 
-    public void setAttributes(List<GameAttributeModifier> attributes) {
+    public GameItemBase setAttributes(List<GameAttributeModifier> attributes) {
         this.attributes = attributes;
+        return this;
     }
 
     public List<String> getTags() {
         return tags;
     }
 
-    public void setTags(List<String> tags) {
+    public GameItemBase setTags(List<String> tags) {
         this.tags = tags;
+        return this;
     }
 }
