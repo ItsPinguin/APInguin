@@ -32,20 +32,22 @@ public class GameAttributeModifier {
 
     public enum Operation{
         ADD,
-        ADD_MULTIPLY,
-        MULTIPLY
+        ADD_PERCENT
+    }
+
+    public GameAttribute getAttribute() {
+        return attribute;
     }
 
     public static double calculate(List<GameAttributeModifier> gameAttributes){
-        double ADD = 0, MULTIPLY=1, ADD_MULTIPLY=0;
+        double ADD = 0, ADD_MULTIPLY=0;
         for (GameAttributeModifier gameAttribute : gameAttributes) {
             switch (gameAttribute.getOperation()){
                 case ADD -> ADD+=gameAttribute.getValue();
-                case MULTIPLY -> MULTIPLY+=gameAttribute.getValue();
-                case ADD_MULTIPLY -> ADD_MULTIPLY+=gameAttribute.getValue();
+                case ADD_PERCENT -> ADD_MULTIPLY+=gameAttribute.getValue()/100;
             }
         }
         ADD_MULTIPLY*=ADD;
-        return ADD*MULTIPLY+ADD_MULTIPLY;
+        return ADD+ADD_MULTIPLY;
     }
 }
