@@ -1,9 +1,14 @@
 package ping.mc.game.item;
 
 import org.bukkit.Material;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import ping.mc.game.attribute.GameAttributeModifier;
 import ping.mc.game.item.type.Type;
 import ping.mc.game.rarity.Rarity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GameItemBase {
     private String id="DEFAULT_ITEM";
@@ -13,11 +18,26 @@ public class GameItemBase {
     private Rarity rarity=new Rarity("COMMON");
     private Type type=new Type("ITEM");
     private String itemBuilder="default";
+    private List<GameAttributeModifier> attributes=new ArrayList<>();
+    private List<String> tags = new ArrayList<>();
 
     public GameItemBase(String id){
         this.id=id;
     }
     public GameItemBase(JSONObject jsonObject){
+        id= (String) jsonObject.getOrDefault("id",id);
+        name= (String) jsonObject.getOrDefault("name",name);
+        material= (Material) jsonObject.getOrDefault("material", material);
+        description= (String) jsonObject.getOrDefault("description",description);
+        rarity= (Rarity) jsonObject.getOrDefault("rarity",rarity);
+        type= (Type) jsonObject.getOrDefault("type", type);
+        itemBuilder= (String) jsonObject.getOrDefault("item_builder",itemBuilder);
+        if (jsonObject.get("attributes")!=null){
+            attributes.addAll(((JSONArray) jsonObject.get("attributes")));
+        }
+        if (jsonObject.get("tags")!=null){
+            tags.addAll(((JSONArray) jsonObject.get("tags")));
+        }
     }
 
     public String getId() {
@@ -75,5 +95,21 @@ public class GameItemBase {
 
     public void setItemBuilder(String itemBuilder) {
         this.itemBuilder = itemBuilder;
+    }
+
+    public List<GameAttributeModifier> getAttributes() {
+        return attributes;
+    }
+
+    public void setAttributes(List<GameAttributeModifier> attributes) {
+        this.attributes = attributes;
+    }
+
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<String> tags) {
+        this.tags = tags;
     }
 }
