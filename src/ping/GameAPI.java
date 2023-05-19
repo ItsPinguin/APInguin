@@ -13,16 +13,16 @@ public class GameAPI extends JavaPlugin {
     @Override
     public void onEnable() {
         PLUGIN=this;
-        LOGGER=PLUGIN.getLogger();
+        LOGGER=Logger.getLogger("Minecraft");
         GameItems.setItemBuilder("default",new DefaultItemBuilder());
 
-        LOGGER.fine("Plugin enabled!");
+        this.getLogger().info("Plugin enabled!");
     }
 
     @Override
     public void onDisable() {
 
 
-        LOGGER.fine("Plugin disabled!");
+        LOGGER.info("Plugin disabled!");
     }
 }

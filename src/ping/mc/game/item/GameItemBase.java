@@ -37,6 +37,7 @@ public class GameItemBase {
             for (Object o : ((JSONArray) jsonObject.get("attributes"))) {
                 JSONObject jsono= ((JSONObject) o);
                 attributes.add(new GameAttributeModifier(
+                        (double) (jsono.getOrDefault("value",0)),
                         GameAttributeModifier.Operation.valueOf((String) jsono.getOrDefault("operation","ADD")),
                         GameAttributes.getAttribute((String) jsono.getOrDefault("attribute","DEFAULT_ATTRIBUTE")))
                 );

@@ -5,7 +5,7 @@ import ping.utils.StringUtils;
 public interface GameAttributeBuilder {
     default String build(GameAttributeModifier gameAttributeModifier){
         GameAttribute attribute=gameAttributeModifier.getAttribute();
-        String value=StringUtils.valueToString(gameAttributeModifier.getValue());
+        String value=StringUtils.enhancedDouble(gameAttributeModifier.getValue());
         switch (gameAttributeModifier.getOperation()){
             case ADD_PERCENT -> {
                 return attribute.getEffect()+value+"%"+attribute.getSymbol();

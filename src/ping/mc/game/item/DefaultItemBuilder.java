@@ -34,7 +34,7 @@ public class DefaultItemBuilder implements ping.mc.game.item.ItemBuilder {
     }
 
     public static String typeAndRarity(GameItem gameItem){
-        return "§l"+gameItem.gameItemBase.getRarity().getEffect()+gameItem.getGameItemBase().getRarity().getName()+" "+gameItem.getGameItemBase().getType().getName();
+        return gameItem.gameItemBase.getRarity().getEffect()+"§l"+gameItem.getGameItemBase().getRarity().getName()+" "+gameItem.getGameItemBase().getType().getName();
     }
 
     public static List<String> stats(List<GameAttributeModifier> stats){
@@ -45,7 +45,7 @@ public class DefaultItemBuilder implements ping.mc.game.item.ItemBuilder {
         for (GameAttribute attribute : GameAttributes.getAttributes().values()){
             for (GameAttributeModifier stat : stats) {
                 if (Objects.equals(stat.getAttribute().getId(), attribute.getId())){
-                    statLore.add("§7"+attribute.getName()+":"+GameAttributes.getAttributeBuilder().build(stat));
+                    statLore.add("§7"+attribute.getName()+": "+GameAttributes.getAttributeBuilder().build(stat));
                 }
             }
         }

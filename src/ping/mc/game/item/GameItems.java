@@ -3,6 +3,7 @@ package ping.mc.game.item;
 import de.tr7zw.nbtapi.NBTItem;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import ping.GameAPI;
 import ping.utils.FileUtils;
 
 import java.io.IOException;
@@ -38,9 +39,10 @@ public class GameItems {
             if (path.toFile().isFile() && !path.toString().startsWith(excludePrefix)){
                 addItem(new GameItemBase(FileUtils.readJSONObject(path.toString())));
             } else if (path.toFile().isDirectory() && !path.toString().startsWith(excludePrefix)) {
+                GameAPI.LOGGER.info("Loading directory: "+path.toFile());
                 Files.walk(path).forEach(filePath ->{
                     if (filePath.toFile().isFile()&& !filePath.toString().startsWith(excludePrefix)){
-                        addItem(new GameItemBase(FileUtils.readJSONObject(path.toString())));
+                        addItem(new GameItemBase(FileUtils.readJSONObject(filePath.toString())));
                     }
                 });
             }
