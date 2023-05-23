@@ -1,8 +1,9 @@
 package ping.mc.game.item;
 
 import de.tr7zw.nbtapi.NBTItem;
-import org.bukkit.Material;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import ping.GameAPI;
 import ping.utils.FileUtils;
 
@@ -24,9 +25,13 @@ public class GameItems {
     }
 
     public static ItemStack getItemStack(String ID){
-        ItemStack itemStack = new ItemStack(Material.STICK);
+        ItemStack itemStack = new ItemStack(getItem(ID).getMaterial());
         NBTItem item=new NBTItem(itemStack);
         item.getOrCreateCompound("Data").setString("id",ID);
+        itemStack=item.getItem();
+        ItemMeta itm=itemStack.getItemMeta();
+        itm.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_DESTROYS,ItemFlag.HIDE_DYE,ItemFlag.HIDE_ENCHANTS,ItemFlag.HIDE_PLACED_ON,ItemFlag.HIDE_POTION_EFFECTS,ItemFlag.HIDE_UNBREAKABLE);
+        itemStack.setItemMeta(itm);
         return getItemBuilder("default").build(item.getItem());
     }
 

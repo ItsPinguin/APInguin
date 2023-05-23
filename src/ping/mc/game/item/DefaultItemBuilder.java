@@ -23,6 +23,7 @@ public class DefaultItemBuilder implements ping.mc.game.item.ItemBuilder {
         itemMeta.setDisplayName(name(gameItem));
         List<String> lore=new ArrayList<>();
         lore.addAll(stats(gameItem.getGameItemBase().getAttributes()));
+        lore.addAll(description(gameItem.getGameItemBase().getDescription()));
         lore.add(typeAndRarity(gameItem));
         itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);
@@ -51,5 +52,15 @@ public class DefaultItemBuilder implements ping.mc.game.item.ItemBuilder {
         }
         statLore.add("");
         return statLore;
+    }
+
+    public static List<String> description(String description){
+        List<String> descriptionList=new ArrayList<>();
+        if (description==null){
+            return descriptionList;
+        }
+        description = description.replaceAll("(.{1,32})(\\s|$)", "§8§o$1\n");
+        descriptionList.addAll(List.of(description.split("\n")));
+        return descriptionList;
     }
 }

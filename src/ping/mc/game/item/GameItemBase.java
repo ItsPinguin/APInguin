@@ -3,6 +3,7 @@ package ping.mc.game.item;
 import org.bukkit.Material;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import ping.mc.game.attribute.GameAttribute;
 import ping.mc.game.attribute.GameAttributeModifier;
 import ping.mc.game.attribute.GameAttributes;
 import ping.mc.game.item.type.Type;
@@ -10,6 +11,7 @@ import ping.mc.game.rarity.Rarity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class GameItemBase {
     private String id="DEFAULT_ITEM";
@@ -28,21 +30,33 @@ public class GameItemBase {
     public GameItemBase(JSONObject jsonObject){
         id= (String) jsonObject.getOrDefault("id",id);
         name= (String) jsonObject.getOrDefault("name",name);
-        material= (Material) jsonObject.getOrDefault("material", material);
+        material= Material.valueOf((String) jsonObject.getOrDefault("material", "STICK"));
         description= (String) jsonObject.getOrDefault("description",description);
         rarity= (Rarity) jsonObject.getOrDefault("rarity",rarity);
         type= (Type) jsonObject.getOrDefault("type", type);
         itemBuilder= (String) jsonObject.getOrDefault("item_builder",itemBuilder);
+
         if (jsonObject.get("attributes")!=null){
-            for (Object o : ((JSONArray) jsonObject.get("attributes"))) {
-                JSONObject jsono= ((JSONObject) o);
-                attributes.add(new GameAttributeModifier(
-                        (double) (jsono.getOrDefault("value",0)),
-                        GameAttributeModifier.Operation.valueOf((String) jsono.getOrDefault("operation","ADD")),
-                        GameAttributes.getAttribute((String) jsono.getOrDefault("attribute","DEFAULT_ATTRIBUTE")))
-                );
+            JSONObject jsonObject1=((JSONObject) jsonObject.get("attributes"));
+            for (GameAttribute value : GameAttributes.getAttributes().values()) {
+                for (Object o : jsonObject1.keySet()) {
+                    if (Objects.equals(o, value.getId())) {
+                        if (!(jsonObject1.get(o) instanceof JSONObject)) {
+                            attributes.add(new GameAttributeModifier((Double) jsonObject1.get(o), GameAttributeModifier.Operation.ADD, value));
+                        } else {
+                            JSONObject jsonObject2 = (JSONObject) jsonObject1.get(o);
+                            attributes.add(new GameAttributeModifier(
+                                    (double) (jsonObject2.getOrDefault("value", o)),
+                                    GameAttributeModifier.Operation.valueOf((String) jsonObject2.getOrDefault("operation", "ADD")),
+                                    value)
+                            );
+                        }
+                        break;
+                    }
+                }
             }
         }
+
         if (jsonObject.get("tags")!=null){
             tags.addAll(((JSONArray) jsonObject.get("tags")));
         }
