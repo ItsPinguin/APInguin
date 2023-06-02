@@ -1,5 +1,6 @@
 package ping.mc.game.item;
 
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import ping.mc.game.attribute.GameAttribute;
@@ -17,6 +18,7 @@ public class DefaultItemBuilder implements ping.mc.game.item.ItemBuilder {
         if (!gameItem.isGameItem()){
             return itemStack;
         }
+        shiny(gameItem);
         ItemMeta itemMeta = itemStack.getItemMeta();
         assert itemMeta != null;
         itemMeta.setUnbreakable(true);
@@ -62,5 +64,14 @@ public class DefaultItemBuilder implements ping.mc.game.item.ItemBuilder {
         description = description.replaceAll("(.{1,32})(\\s|$)", "§8§o$1\n");
         descriptionList.addAll(List.of(description.split("\n")));
         return descriptionList;
+    }
+    public static GameItem shiny(GameItem item){
+        if (item.getGameItemBase().isShiny()){
+            ItemMeta itm=item.getItemStack().getItemMeta();
+            itm.addEnchant(Enchantment.LUCK,1,true);
+            item.getItemStack().setItemMeta(itm);
+            return item;
+        }
+        return item;
     }
 }

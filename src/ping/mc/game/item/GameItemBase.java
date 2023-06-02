@@ -21,12 +21,23 @@ public class GameItemBase {
     private Rarity rarity=new Rarity("COMMON");
     private Type type=new Type("ITEM");
     private String itemBuilder="default";
+
+    private boolean shiny=false;
     private List<GameAttributeModifier> attributes=new ArrayList<>();
     private List<String> tags = new ArrayList<>();
 
     public GameItemBase(String id){
         this.id=id;
     }
+
+    public boolean isShiny() {
+        return shiny;
+    }
+
+    public void setShiny(boolean shiny) {
+        this.shiny = shiny;
+    }
+
     public GameItemBase(JSONObject jsonObject){
         id= (String) jsonObject.getOrDefault("id",id);
         name= (String) jsonObject.getOrDefault("name",name);
@@ -35,6 +46,7 @@ public class GameItemBase {
         rarity= (Rarity) jsonObject.getOrDefault("rarity",rarity);
         type= (Type) jsonObject.getOrDefault("type", type);
         itemBuilder= (String) jsonObject.getOrDefault("item_builder",itemBuilder);
+        shiny= (boolean) jsonObject.getOrDefault("shiny",shiny);
 
         if (jsonObject.get("attributes")!=null){
             JSONObject jsonObject1=((JSONObject) jsonObject.get("attributes"));

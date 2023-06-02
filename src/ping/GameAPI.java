@@ -1,5 +1,6 @@
 package ping;
 
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import ping.mc.game.item.DefaultItemBuilder;
@@ -24,5 +25,9 @@ public class GameAPI extends JavaPlugin {
 
 
         LOGGER.info("Plugin disabled!");
+    }
+
+    public void sendFormattedMessage(Player p, String json) {
+        getServer().dispatchCommand( getServer().getConsoleSender(), "tellraw " + p.getName() + " " + json);
     }
 }
