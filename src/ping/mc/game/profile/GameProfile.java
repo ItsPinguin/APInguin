@@ -1,88 +1,27 @@
 package ping.mc.game.profile;
 
-import org.json.simple.JSONObject;
-import ping.utils.FileUtils;
+import org.bukkit.inventory.ItemStack;
+import ping.utils.Config;
 
-import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.util.HashMap;
 import java.util.UUID;
 
-public class GameProfile {
-    private UUID uuid=UUID.randomUUID();
+public class GameProfile implements Serializable {
+    UUID uuid;
+    ItemStack[] itemContent;
+    ItemStack[] extraItemContent;
+    ItemStack[] armorContent;
+    HashMap<Object,Object> content;
 
-    public UUID getUuid() {
-        return uuid;
-    }
-
-    private JSONObject data=new JSONObject();
-    private String directory="plugins/GameAPI/profiles/"+uuid;
-
-    public GameProfile() {
-    }
-    public GameProfile(String directory) {
-        this.directory=directory;
-    }
-    public GameProfile(JSONObject data) {
-        this.data = data;
-        this.uuid = (UUID) data.getOrDefault("uuid",uuid);
-    }
-    public GameProfile(JSONObject data, String directory) {
-        this.data = data;
-        this.directory = directory;
-    }
-    public GameProfile load(){
-        data= FileUtils.readJSONObject(directory);
-        GameProfiles.profiles.put(uuid, this);
-        return this;
-    }
-    public void unload(){
-        save();
-        GameProfiles.profiles.remove(uuid);
-    }
-    public GameProfile save(){
-        FileUtils.writeJSONObject(directory,data);
-        return this;
-    }
-    public void delete(){
-        unload();
-        new File(GameProfiles.profilesDirectory+uuid).delete();
-        for (GamePlayerProfile profile : GameProfiles.playerProfiles.values()) {
-            if (profile.getCurrentProfile().getUuid()==uuid){
-                profile.logout();
-            }
-            for (Object profileProfile : profile.getProfiles()) {
-                if(((JSONObject) profileProfile).get("profile")==uuid){
-                    profile.getProfiles().remove(profileProfile);
-                }
-            }
+    public void save(){
+        try {
+            new ObjectOutputStream(new FileOutputStream(Config.PROFILES_DIRECTORY+uuid)).writeObject(this);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-    }
-    public Object getObjectAt(String key, String... path){
-        JSONObject current=data;
-        for (String s : path) {
-            if (current.get(s)==null){
-                return null;
-            }
-            if (!(current.get(s) instanceof JSONObject)){
-                return current.get(s);
-            }
-            current= (JSONObject) current.get(s);
-        }
-        return current.get(key);
-    }
-
-    public JSONObject getData() {
-        return data;
-    }
-
-    public void setData(JSONObject data) {
-        this.data = data;
-    }
-
-    public String getDirectory() {
-        return directory;
-    }
-
-    public void setDirectory(String directory) {
-        this.directory = directory;
     }
 }

@@ -1,51 +1,25 @@
 package ping.mc.game.profile;
 
-import org.bukkit.OfflinePlayer;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import ping.utils.FileUtils;
+import ping.utils.Config;
 
-public class GamePlayerProfile {
-    private GameProfile currentProfile;
-    private OfflinePlayer profileHolder;
-    private JSONArray profiles;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
-    public GamePlayerProfile(OfflinePlayer profileHolder) {
-        this.profileHolder = profileHolder;
-    }
+public class GamePlayerProfile implements Serializable {
+    UUID uuid;
+    String currentProfile;
+    List<String> profiles=new ArrayList<>();
 
-    public GamePlayerProfile save(){
-        JSONObject jsonObject=new JSONObject();
-        jsonObject.put("current_profile", currentProfile.getUuid());
-        jsonObject.put("profiles",profiles);
-
-        FileUtils.writeJSONObject(GameProfiles.playerProfilesDirectory+profileHolder.getUniqueId(),jsonObject);
-        return this;
-    }
-    public GamePlayerProfile load(){
-        JSONObject jsonObject=FileUtils.readJSONObject(GameProfiles.playerProfilesDirectory+profileHolder.getUniqueId());
-        GameProfiles.playerProfiles.put(profileHolder.getUniqueId(),this);
-        return this;
-    }
-
-    public void unload(){
-        save();
-        GameProfiles.playerProfiles.remove(profileHolder.getUniqueId());
-    }
-
-    public void logout(){
-        //todo put player in logout state
-    }
-
-    public GameProfile getCurrentProfile() {
-        return currentProfile;
-    }
-
-    public OfflinePlayer getProfileHolder() {
-        return profileHolder;
-    }
-
-    public JSONArray getProfiles() {
-        return profiles;
+    public void save(){
+        try {
+            new ObjectOutputStream(new FileOutputStream(Config.PLAYER_PROFILES_DIRECTORY+uuid)).writeObject(this);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
