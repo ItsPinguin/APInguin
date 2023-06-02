@@ -34,7 +34,6 @@ public class GamePlayerProfile_Old {
     }
 
     public void logout(){
-        //todo put player in logout state
     }
 
     public GameProfile_Old getCurrentProfile() {
