@@ -11,11 +11,15 @@ import java.util.HashMap;
 import java.util.UUID;
 
 public class GameProfile implements Serializable {
-    UUID uuid;
-    ItemStack[] itemContent;
-    ItemStack[] extraItemContent;
-    ItemStack[] armorContent;
-    HashMap<Object,Object> content;
+    public UUID uuid;
+    public ItemStack[] itemContent;
+    public ItemStack[] extraItemContent;
+    public ItemStack[] armorContent;
+    public HashMap<Object,Object> content;
+
+    public GameProfile(UUID uuid) {
+        this.uuid = uuid;
+    }
 
     public void save(){
         try {

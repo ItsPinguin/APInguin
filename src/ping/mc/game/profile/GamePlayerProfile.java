@@ -10,13 +10,18 @@ import java.util.List;
 import java.util.UUID;
 
 public class GamePlayerProfile implements Serializable {
-    UUID uuid;
-    UUID currentProfile;
-    List<UUID> profiles=new ArrayList<>();
+    public UUID uuid;
+    public UUID currentProfile;
+    public List<UUID> profiles=new ArrayList<>();
 
     public GamePlayerProfile(UUID uuid) {
         this.uuid = uuid;
-        if (new File(Config.PLAYER_PROFILES_DIRECTORY+uuid).exists()){
+        if (GameProfiles.playerProfiles.get(uuid)!=null){
+            GamePlayerProfile profile=GameProfiles.playerProfiles.get(uuid);
+            currentProfile=profile.currentProfile;
+            profiles=profile.profiles;
+        }
+        else if (new File(Config.PLAYER_PROFILES_DIRECTORY+uuid).exists()){
             try {
                 GamePlayerProfile profile= (GamePlayerProfile) new ObjectInputStream(new FileInputStream(Config.PLAYER_PROFILES_DIRECTORY + uuid)).readObject();
                 currentProfile=profile.currentProfile;
@@ -24,6 +29,10 @@ public class GamePlayerProfile implements Serializable {
             } catch (IOException | ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
+        } else {
+            GameProfile profile= new GameProfile(UUID.randomUUID());
+            profiles.add(profile.uuid);
+            currentProfile=profile.uuid;
         }
     }
 
