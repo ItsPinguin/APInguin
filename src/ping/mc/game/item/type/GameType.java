@@ -6,15 +6,15 @@ import org.json.simple.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Type {
+public class GameType {
     String name="Item";
     String id="ITEM";
     List<String> tags=new ArrayList<>();
 
-    public Type(String id) {
+    public GameType(String id) {
         this.id=id;
     }
-    public Type(JSONObject jsonObject) {
+    public GameType(JSONObject jsonObject) {
         id= (String) jsonObject.getOrDefault("id","ITEM");
         name= (String) jsonObject.getOrDefault("nale","COMMON");
         if (jsonObject.get("tags")!=null){
@@ -23,7 +23,7 @@ public class Type {
         }
     }
 
-    public Type(String name, String id) {
+    public GameType(String name, String id) {
         this.name = name;
         this.id = id;
     }

@@ -6,8 +6,8 @@ import org.json.simple.JSONObject;
 import ping.mc.game.attribute.GameAttribute;
 import ping.mc.game.attribute.GameAttributeModifier;
 import ping.mc.game.attribute.GameAttributes;
-import ping.mc.game.item.type.Type;
-import ping.mc.game.rarity.Rarity;
+import ping.mc.game.item.type.GameType;
+import ping.mc.game.rarity.GameRarity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,8 +18,8 @@ public class GameItemBase {
     private Material material=Material.STICK;
     private String name="Default Item";
     private String description =null;
-    private Rarity rarity=new Rarity("COMMON");
-    private Type type=new Type("ITEM");
+    private GameRarity rarity=new GameRarity("COMMON");
+    private GameType type=new GameType("ITEM");
     private String itemBuilder="default";
 
     private boolean shiny=false;
@@ -53,8 +53,8 @@ public class GameItemBase {
         name= (String) jsonObject.getOrDefault("name",name);
         material= Material.valueOf((String) jsonObject.getOrDefault("material", "STICK"));
         description= (String) jsonObject.getOrDefault("description",description);
-        rarity= (Rarity) jsonObject.getOrDefault("rarity",rarity);
-        type= (Type) jsonObject.getOrDefault("type", type);
+        rarity= (GameRarity) jsonObject.getOrDefault("rarity",rarity);
+        type= (GameType) jsonObject.getOrDefault("type", type);
         itemBuilder= (String) jsonObject.getOrDefault("item_builder",itemBuilder);
         shiny= (boolean) jsonObject.getOrDefault("shiny",shiny);
 
@@ -110,20 +110,20 @@ public class GameItemBase {
         return this;
     }
 
-    public Rarity getRarity() {
+    public GameRarity getRarity() {
         return rarity;
     }
 
-    public GameItemBase setRarity(Rarity rarity) {
+    public GameItemBase setRarity(GameRarity rarity) {
         this.rarity = rarity;
         return this;
     }
 
-    public Type getType() {
+    public GameType getType() {
         return type;
     }
 
-    public GameItemBase setType(Type type) {
+    public GameItemBase setType(GameType type) {
         this.type = type;
         return this;
     }

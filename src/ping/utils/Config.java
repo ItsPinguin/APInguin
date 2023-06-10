@@ -16,6 +16,10 @@ public class Config {
     public static double MAX_MANA=50;
     public static double MAX_HEALTH=50;
     public static long SAVE_PROFILES_EVERY_X_TICK=20*60*5;
+    public static String ITEMS_LOADING_PATH="plugins/GameAPI/item";
+    public static String RARITIES_LOADING_PATH="plugins/GameAPI/rarity";
+    public static String TYPE_LOADING_PATH="plugins/GameAPI/type";
+    public static String ATTRIBUTE_LOADING_PATH="plugins/GameAPI/attribute";
 
     public static void load() {
         try {
