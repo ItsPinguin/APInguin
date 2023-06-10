@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class DefaultItemBuilder implements ping.mc.game.item.ItemBuilder {
+public class DefaultItemBuilder implements GameItemBuilder {
     @Override
     public ItemStack build(ItemStack itemStack) {
         GameItem gameItem=new GameItem(itemStack);

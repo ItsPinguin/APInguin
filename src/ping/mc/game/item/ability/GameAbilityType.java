@@ -1,6 +1,6 @@
 package ping.mc.game.item.ability;
 
-public enum AbilityType {
+public enum GameAbilityType {
     PASSIVE,
     SHIFT,
     RIGHT_CLICK,

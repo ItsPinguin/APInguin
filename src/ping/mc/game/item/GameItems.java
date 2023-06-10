@@ -13,7 +13,7 @@ import java.nio.file.Path;
 import java.util.HashMap;
 
 public class GameItems {
-    private static HashMap<String,ItemBuilder> itemBuilders=new HashMap<>();
+    private static HashMap<String, GameItemBuilder> itemBuilders=new HashMap<>();
     private static HashMap<Object, GameItemBase> itemMap = new HashMap<>();
 
     public static void addItem(GameItemBase item){
@@ -56,7 +56,7 @@ public class GameItems {
         }
     }
 
-    public static ItemBuilder getItemBuilder(String id) {return itemBuilders.get(id);}
+    public static GameItemBuilder getItemBuilder(String id) {return itemBuilders.get(id);}
 
-    public static void setItemBuilder(String id ,ItemBuilder itemBuilder) {itemBuilders.put(id,itemBuilder);}
+    public static void setItemBuilder(String id , GameItemBuilder itemBuilder) {itemBuilders.put(id,itemBuilder);}
 }

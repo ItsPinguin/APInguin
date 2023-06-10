@@ -1,19 +1,19 @@
 package ping.mc.game.item.ability;
 
-public class AbilityInfo {
+public class GameAbilityInfo {
     private String id="my_id";
     private String name="My Ability";
     private String description="This is the standard ability.";
     private double manaCost=1;
     private long cooldown=1000;
     private long delay=0;
-    private AbilityType abilityType=AbilityType.SHIFT_RIGHT_CLICK;
+    private GameAbilityType abilityType= GameAbilityType.SHIFT_RIGHT_CLICK;
 
     public String getId() {
         return id;
     }
 
-    public AbilityInfo setId(String id) {
+    public GameAbilityInfo setId(String id) {
         this.id = id;
         return this;
     }
@@ -22,7 +22,7 @@ public class AbilityInfo {
         return name;
     }
 
-    public AbilityInfo setName(String name) {
+    public GameAbilityInfo setName(String name) {
         this.name = name;
         return this;
     }
@@ -31,7 +31,7 @@ public class AbilityInfo {
         return description;
     }
 
-    public AbilityInfo setDescription(String description) {
+    public GameAbilityInfo setDescription(String description) {
         this.description = description;
         return this;
     }
@@ -40,7 +40,7 @@ public class AbilityInfo {
         return manaCost;
     }
 
-    public AbilityInfo setManaCost(double manaCost) {
+    public GameAbilityInfo setManaCost(double manaCost) {
         this.manaCost = manaCost;
         return this;
     }
@@ -49,7 +49,7 @@ public class AbilityInfo {
         return cooldown;
     }
 
-    public AbilityInfo setCooldown(long cooldown) {
+    public GameAbilityInfo setCooldown(long cooldown) {
         this.cooldown = cooldown;
         return this;
     }
@@ -58,16 +58,16 @@ public class AbilityInfo {
         return delay;
     }
 
-    public AbilityInfo setDelay(long delay) {
+    public GameAbilityInfo setDelay(long delay) {
         this.delay = delay;
         return this;
     }
 
-    public AbilityType getAbilityType() {
+    public GameAbilityType getAbilityType() {
         return abilityType;
     }
 
-    public AbilityInfo setAbilityType(AbilityType abilityType) {
+    public GameAbilityInfo setAbilityType(GameAbilityType abilityType) {
         this.abilityType = abilityType;
         return this;
     }

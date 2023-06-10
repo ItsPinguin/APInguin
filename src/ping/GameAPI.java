@@ -5,7 +5,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import ping.mc.game.item.DefaultItemBuilder;
 import ping.mc.game.item.GameItems;
-import ping.mc.game.item.ability.AbilityEvents;
+import ping.mc.game.item.ability.GameAbilityEvents;
 import ping.utils.Config;
 
 import java.util.logging.Logger;
@@ -18,7 +18,7 @@ public class GameAPI extends JavaPlugin {
         PLUGIN=this;
         LOGGER=Logger.getLogger("GameAPI");
         LOGGER.info("Enabling plugin ...");
-        Bukkit.getPluginManager().registerEvents(new AbilityEvents(),this);
+        Bukkit.getPluginManager().registerEvents(new GameAbilityEvents(),this);
         GameItems.setItemBuilder("default",new DefaultItemBuilder());
         Config.load();
         LOGGER.info("Plugin enabled!");

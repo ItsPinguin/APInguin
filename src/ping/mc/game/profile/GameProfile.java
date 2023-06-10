@@ -16,8 +16,6 @@ public class GameProfile implements Serializable {
     public ItemStack[] extraItemContent;
     public ItemStack[] armorContent;
     public HashMap<Object,Object> content;
-    public PlayerInfo playerInfo=new PlayerInfo();
-
     public GameProfile(UUID uuid) {
         this.uuid = uuid;
     }
