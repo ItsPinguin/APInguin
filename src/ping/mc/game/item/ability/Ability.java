@@ -6,10 +6,11 @@ import ping.mc.game.profile.GameProfile;
 
 public interface Ability {
     AbilityInfo getAbilityInfo();
-    default void trigger(Player player){
+    default boolean trigger(Player player){
         GamePlayerProfile profile=new GamePlayerProfile(player.getUniqueId());
-        if (getAbilityInfo().manaCost<= ((double) new GameProfile(profile.currentProfile).content.get("mana"))){
+        if (getAbilityInfo().getManaCost()<= ((double) new GameProfile(profile.currentProfile).content.get("mana"))){
 
         }
+        return true;
     }
 }

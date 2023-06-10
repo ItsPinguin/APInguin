@@ -26,6 +26,8 @@ public class GameItemBase {
     private List<GameAttributeModifier> attributes=new ArrayList<>();
     private List<String> tags = new ArrayList<>();
 
+    private List<String> abilities = new ArrayList<>();
+
     public GameItemBase(String id){
         this.id=id;
     }
@@ -36,6 +38,14 @@ public class GameItemBase {
 
     public void setShiny(boolean shiny) {
         this.shiny = shiny;
+    }
+
+    public List<String> getAbilities() {
+        return abilities;
+    }
+
+    public void setAbilities(List<String> abilities) {
+        this.abilities = abilities;
     }
 
     public GameItemBase(JSONObject jsonObject){
@@ -71,6 +81,10 @@ public class GameItemBase {
 
         if (jsonObject.get("tags")!=null){
             tags.addAll(((JSONArray) jsonObject.get("tags")));
+        }
+
+        if (jsonObject.get("abilities")!=null){
+            abilities.addAll(((JSONArray) jsonObject.get("abilities")));
         }
     }
 
@@ -148,4 +162,6 @@ public class GameItemBase {
         this.tags = tags;
         return this;
     }
+
+
 }

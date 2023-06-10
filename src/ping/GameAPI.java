@@ -1,10 +1,11 @@
 package ping;
 
-import org.bukkit.entity.Player;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import ping.mc.game.item.DefaultItemBuilder;
 import ping.mc.game.item.GameItems;
+import ping.mc.game.item.ability.AbilityEvents;
 import ping.utils.Config;
 
 import java.util.logging.Logger;
@@ -17,6 +18,7 @@ public class GameAPI extends JavaPlugin {
         PLUGIN=this;
         LOGGER=Logger.getLogger("GameAPI");
         LOGGER.info("Enabling plugin ...");
+        Bukkit.getPluginManager().registerEvents(new AbilityEvents(),this);
         GameItems.setItemBuilder("default",new DefaultItemBuilder());
         Config.load();
         LOGGER.info("Plugin enabled!");
@@ -25,9 +27,5 @@ public class GameAPI extends JavaPlugin {
     @Override
     public void onDisable() {
         LOGGER.info("Plugin disabled!");
-    }
-
-    public void sendFormattedMessage(Player p, String json) {
-        getServer().dispatchCommand( getServer().getConsoleSender(), "tellraw " + p.getName() + " " + json);
     }
 }

@@ -14,6 +14,7 @@ public class Config {
     public static String PLAYER_PROFILES_DIRECTORY="plugins/GameAPI/player_profiles/";
     public static String PROFILES_DIRECTORY="plugins/GameAPI/profiles/";
     public static double MAX_MANA=50;
+    public static double MAX_HEALTH=50;
 
     public static void load() {
         try {
