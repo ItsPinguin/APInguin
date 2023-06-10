@@ -11,8 +11,8 @@ import java.util.UUID;
 
 public class GamePlayerProfile implements Serializable {
     public UUID uuid;
-    public UUID currentProfile;
-    public List<UUID> profiles=new ArrayList<>();
+    private UUID currentProfile;
+    private List<UUID> profiles=new ArrayList<>();
 
     public GamePlayerProfile(UUID uuid) {
         this.uuid = uuid;
@@ -44,9 +44,28 @@ public class GamePlayerProfile implements Serializable {
             profile.armorContent=player.getInventory().getArmorContents();
             profile.itemContent=player.getInventory().getContents();
             profile.extraItemContent=player.getInventory().getExtraContents();
+            profile.save();
             new ObjectOutputStream(new FileOutputStream(Config.PLAYER_PROFILES_DIRECTORY+uuid)).writeObject(this);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void switchToProfile(UUID uuid){
+        save();
+        GameProfiles.profiles.remove(currentProfile);
+        currentProfile=uuid;
+    }
+
+    public GameProfile getCurrentProfile(){
+        return new GameProfile(currentProfile);
+    }
+
+    public List<GameProfile> getProfileList(){
+        List<GameProfile> profileList=new ArrayList<>();
+        for (UUID profile : profiles) {
+            profileList.add(new GameProfile(profile));
+        }
+        return profileList;
     }
 }

@@ -15,6 +15,7 @@ public class Config {
     public static String PROFILES_DIRECTORY="plugins/GameAPI/profiles/";
     public static double MAX_MANA=50;
     public static double MAX_HEALTH=50;
+    public static long SAVE_PROFILES_EVERY_X_TICK=20*60*5;
 
     public static void load() {
         try {
