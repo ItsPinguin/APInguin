@@ -66,8 +66,8 @@ public class GameAbilityEvents implements Listener {
             if (GameAbilities.getAbility(ability)!=null&& GameAbilities.getAbility(ability).getAbilityInfo().getAbilityType()==type){
                 GameAbility ability1= GameAbilities.getAbility(ability);
                 if(ability1.trigger(player)){
-                    if (ability1.getAbilityInfo().getManaCost()<= ((double) new GameProfile(new GamePlayerProfile(player.getUniqueId()).currentProfile).content.get("mana"))){
-                        GameProfile profile=new GameProfile(new GamePlayerProfile(player.getUniqueId()).currentProfile);
+                    if (ability1.getAbilityInfo().getManaCost()<= ((double) new GamePlayerProfile(player.getUniqueId()).getCurrentProfile().content.get("mana"))){
+                        GameProfile profile=new GamePlayerProfile(player.getUniqueId()).getCurrentProfile();
                         profile.content.put("mana",((double) profile.content.get("mana"))-ability1.getAbilityInfo().getManaCost());
                     }
                 }

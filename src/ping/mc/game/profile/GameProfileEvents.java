@@ -20,7 +20,7 @@ public class GameProfileEvents implements Listener {
         GamePlayerProfile profile=new GamePlayerProfile(e.getPlayer().getUniqueId());
         profile.save();
         GameProfiles.profiles.get(profile.uuid).save();
-        GameProfiles.profiles.remove(profile.currentProfile);
+        GameProfiles.profiles.remove(profile.getCurrentProfile().uuid);
         GameProfiles.playerProfiles.remove(profile.uuid);
     }
 
