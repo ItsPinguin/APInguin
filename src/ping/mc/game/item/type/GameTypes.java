@@ -37,7 +37,7 @@ public class GameTypes {
                 GameType type=new GameType(FileUtils.readJSONObject(path.toString()));
                 types.put(type.getId(), type);
             } else if (path.toFile().isDirectory() && !path.toString().startsWith(excludePrefix)) {
-                GameAPI.LOGGER.info("Loading directory: "+path.toFile());
+                GameAPI.LOGGER.info("Loading types from directory: "+path.toFile());
                 Files.walk(path).forEach(filePath ->{
                     if (filePath.toFile().isFile()&& !filePath.toString().startsWith(excludePrefix)){
                         GameType type=new GameType(FileUtils.readJSONObject(path.toString()));

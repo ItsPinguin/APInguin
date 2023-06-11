@@ -26,11 +26,10 @@ public class GameAPI extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new GameAbilityEvents(),this);
         Bukkit.getPluginManager().registerEvents(new GameProfileEvents(),this);
         GameItems.setItemBuilder("default",new DefaultItemBuilder());
-        GameItems.loadAllFromPath(Paths.get(Config.ITEMS_LOADING_PATH),"-");
+        GameAttributes.loadAllFromPath(Paths.get(Config.ATTRIBUTE_LOADING_PATH),"-");
         GameRarities.loadAllFromPath(Paths.get(Config.RARITIES_LOADING_PATH),"-");
         GameTypes.loadAllFromPath(Paths.get(Config.TYPE_LOADING_PATH),"-");
-        GameAttributes.loadAllFromPath(Paths.get(Config.ATTRIBUTE_LOADING_PATH),"-");
-        Config.load();
+        GameItems.loadAllFromPath(Paths.get(Config.ITEMS_LOADING_PATH),"-");
         LOGGER.info("Plugin enabled!");
     }
 

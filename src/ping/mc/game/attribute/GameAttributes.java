@@ -42,7 +42,7 @@ public class GameAttributes {
                 GameAttribute attribute=new GameAttribute(FileUtils.readJSONObject(path.toString()));
                 attributes.put(attribute.getId(), attribute);
             } else if (path.toFile().isDirectory() && !path.toString().startsWith(excludePrefix)) {
-                GameAPI.LOGGER.info("Loading directory: "+path.toFile());
+                GameAPI.LOGGER.info("Loading attributes from directory: "+path.toFile());
                 Files.walk(path).forEach(filePath ->{
                     if (filePath.toFile().isFile()&& !filePath.toString().startsWith(excludePrefix)){
                         GameAttribute attribute=new GameAttribute(FileUtils.readJSONObject(path.toString()));

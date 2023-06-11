@@ -44,7 +44,7 @@ public class GameItems {
             if (path.toFile().isFile() && !path.toString().startsWith(excludePrefix)){
                 addItem(new GameItemBase(FileUtils.readJSONObject(path.toString())));
             } else if (path.toFile().isDirectory() && !path.toString().startsWith(excludePrefix)) {
-                GameAPI.LOGGER.info("Loading directory: "+path.toFile());
+                GameAPI.LOGGER.info("Loading items from directory: "+path.toFile());
                 Files.walk(path).forEach(filePath ->{
                     if (filePath.toFile().isFile()&& !filePath.toString().startsWith(excludePrefix)){
                         addItem(new GameItemBase(FileUtils.readJSONObject(filePath.toString())));

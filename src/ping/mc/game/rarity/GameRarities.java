@@ -38,7 +38,7 @@ public class GameRarities {
                 GameRarity rarity=new GameRarity(FileUtils.readJSONObject(path.toString()));
                 rarities.put(rarity.getId(), rarity);
             } else if (path.toFile().isDirectory() && !path.toString().startsWith(excludePrefix)) {
-                GameAPI.LOGGER.info("Loading directory: "+path.toFile());
+                GameAPI.LOGGER.info("Loading rarities from directory: "+path.toFile());
                 Files.walk(path).forEach(filePath ->{
                     if (filePath.toFile().isFile()&& !filePath.toString().startsWith(excludePrefix)){
                         GameRarity rarity=new GameRarity(FileUtils.readJSONObject(path.toString()));

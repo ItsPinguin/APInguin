@@ -9,10 +9,10 @@ import java.util.UUID;
 
 public class GameProfile implements Serializable {
     public UUID uuid;
-    public ItemStack[] itemContent;
-    public ItemStack[] extraItemContent;
-    public ItemStack[] armorContent;
-    public HashMap<Object,Object> content;
+    public ItemStack[] itemContent=null;
+    public ItemStack[] extraItemContent=null;
+    public ItemStack[] armorContent=null;
+    public HashMap<Object,Object> content=new HashMap<>();
     public GameProfile(UUID uuid) {
         this.uuid = uuid;
         if (GameProfiles.profiles.get(uuid)!=null){
@@ -32,8 +32,6 @@ public class GameProfile implements Serializable {
             } catch (IOException | ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
-        } else {
-            GameProfile profile= new GameProfile(UUID.randomUUID());
         }
     }
 

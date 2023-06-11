@@ -29,5 +29,6 @@
     <orderEntry type="library" name="NoteBlockAPI-1.6.1-SNAPSHOT" level="project" />
     <orderEntry type="library" name="json-simple-1.1.1" level="project" />
     <orderEntry type="library" name="StructureBlockLib" level="project" />
+    <orderEntry type="library" name="GameMaker" level="project" />
   </component>
 </module>
