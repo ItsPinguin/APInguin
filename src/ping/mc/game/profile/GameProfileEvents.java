@@ -12,17 +12,13 @@ import ping.utils.Config;
 public class GameProfileEvents implements Listener {
     @EventHandler
     public void join(PlayerJoinEvent e){
-        GameProfile profile=new GamePlayerProfile(e.getPlayer().getUniqueId()).getCurrentProfile();
-        e.getPlayer().getInventory().setContents(profile.itemContent);
-        e.getPlayer().getInventory().setArmorContents(profile.armorContent);
-        e.getPlayer().getInventory().setExtraContents(profile.extraItemContent);
+        new GamePlayerProfile(e.getPlayer().getUniqueId()).getCurrentProfile().load(e.getPlayer());
     }
 
     @EventHandler
     public void leave(PlayerQuitEvent e){
         GamePlayerProfile profile=new GamePlayerProfile(e.getPlayer().getUniqueId());
         profile.save();
-        GameProfiles.profiles.get(profile.uuid).save();
         GameProfiles.profiles.remove(profile.getCurrentProfile().uuid);
         GameProfiles.playerProfiles.remove(profile.uuid);
     }

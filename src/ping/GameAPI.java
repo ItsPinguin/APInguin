@@ -12,6 +12,7 @@ import ping.mc.game.profile.GameProfileEvents;
 import ping.mc.game.rarity.GameRarities;
 import ping.utils.Config;
 
+import java.io.File;
 import java.nio.file.Paths;
 import java.util.logging.Logger;
 
@@ -23,6 +24,8 @@ public class GameAPI extends JavaPlugin {
         PLUGIN=this;
         LOGGER=Logger.getLogger("GameAPI");
         LOGGER.info("Enabling plugin ...");
+        new File(Config.PLAYER_PROFILES_DIRECTORY).mkdirs();
+        new File(Config.PROFILES_DIRECTORY).mkdirs();
         Bukkit.getPluginManager().registerEvents(new GameAbilityEvents(),this);
         Bukkit.getPluginManager().registerEvents(new GameProfileEvents(),this);
         GameItems.setItemBuilder("default",new DefaultItemBuilder());

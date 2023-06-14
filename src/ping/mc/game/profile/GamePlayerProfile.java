@@ -30,7 +30,7 @@ public class GamePlayerProfile implements Serializable {
                 throw new RuntimeException(e);
             }
         } else {
-            GameProfile profile= new GameProfile(UUID.randomUUID());
+            GameProfile profile=getCurrentProfile();
             profiles.add(profile.uuid);
             currentProfile=profile.uuid;
         }
@@ -38,12 +38,10 @@ public class GamePlayerProfile implements Serializable {
 
     public void save(){
         try {
-            GameProfile profile= GameProfiles.profiles.get(uuid);
+            GameProfile profile= getCurrentProfile();
             Player player= Bukkit.getPlayer(uuid);
             assert player != null;
-            profile.armorContent=player.getInventory().getArmorContents();
-            profile.itemContent=player.getInventory().getContents();
-            profile.extraItemContent=player.getInventory().getExtraContents();
+            profile.saveData(player);
             profile.save();
             new ObjectOutputStream(new FileOutputStream(Config.PLAYER_PROFILES_DIRECTORY+uuid)).writeObject(this);
         } catch (IOException e) {
@@ -55,17 +53,21 @@ public class GamePlayerProfile implements Serializable {
         save();
         GameProfiles.profiles.remove(currentProfile);
         currentProfile=uuid;
+        getCurrentProfile();
     }
 
-    public GameProfile getCurrentProfile(){
-        return new GameProfile(currentProfile);
-    }
-
-    public List<GameProfile> getProfileList(){
-        List<GameProfile> profileList=new ArrayList<>();
-        for (UUID profile : profiles) {
-            profileList.add(new GameProfile(profile));
+    public GameProfile getCurrentProfile() {
+        if (GameProfiles.profiles.get(currentProfile) == null) {
+            try {
+                GameProfiles.profiles.put(currentProfile, new GameProfile(currentProfile.toString()));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
-        return profileList;
+        return GameProfiles.profiles.get(currentProfile);
+    }
+
+    public List<UUID> getProfileList(){
+        return profiles;
     }
 }

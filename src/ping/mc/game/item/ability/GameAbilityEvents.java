@@ -15,6 +15,9 @@ import ping.mc.game.profile.GameProfile;
 public class GameAbilityEvents implements Listener {
     @EventHandler
     public void click(PlayerInteractEvent e){
+        if (e.getPlayer().getItemInUse()==null){
+            return;
+        }
         Player player = e.getPlayer();
         if (e.getPlayer().isSneaking()){
             if (e.getAction()== Action.RIGHT_CLICK_BLOCK && execute(GameAbilityType.SHIFT_BLOCK_RIGHT_CLICK,player)){
@@ -42,6 +45,9 @@ public class GameAbilityEvents implements Listener {
 
     @EventHandler
     public void entityClick(PlayerInteractEntityEvent e){
+        if (e.getPlayer().getItemInUse()==null){
+            return;
+        }
         if (e.getPlayer().isSneaking()){
             execute(GameAbilityType.SHIFT_ENTITY_RIGHT_CLICK,e.getPlayer());
         }else {
@@ -52,6 +58,9 @@ public class GameAbilityEvents implements Listener {
     @EventHandler
     public void entityDmg(EntityDamageByEntityEvent e){
         if (e.getDamager() instanceof Player p){
+            if (p.getItemInUse()==null){
+                return;
+            }
             if (p.isSneaking()){
                 execute(GameAbilityType.SHIFT_ENTITY_RIGHT_CLICK,p);
             }else {
@@ -66,9 +75,9 @@ public class GameAbilityEvents implements Listener {
             if (GameAbilities.getAbility(ability)!=null&& GameAbilities.getAbility(ability).getAbilityInfo().getAbilityType()==type){
                 GameAbility ability1= GameAbilities.getAbility(ability);
                 if(ability1.trigger(player)){
-                    if (ability1.getAbilityInfo().getManaCost()<= ((double) new GamePlayerProfile(player.getUniqueId()).getCurrentProfile().content.get("mana"))){
+                    if (ability1.getAbilityInfo().getManaCost()<= (new GamePlayerProfile(player.getUniqueId()).getCurrentProfile().getDouble("mana"))){
                         GameProfile profile=new GamePlayerProfile(player.getUniqueId()).getCurrentProfile();
-                        profile.content.put("mana",((double) profile.content.get("mana"))-ability1.getAbilityInfo().getManaCost());
+                        profile.setDouble("mana",profile.getDouble("mana")-ability1.getAbilityInfo().getManaCost());
                     }
                 }
                 return true;
