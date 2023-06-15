@@ -2,6 +2,7 @@ package ping.mc.game.item.type;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import ping.mc.game.attribute.GameAttributeSlot;
 
 import java.util.ArrayList;
 import java.util.List;

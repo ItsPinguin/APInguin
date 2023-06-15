@@ -1,4 +1,4 @@
-package ping.mc.game.item.type;
+package ping.mc.game.attribute;
 
 public enum GameAttributeSlot {
     ANY,
@@ -7,5 +7,6 @@ public enum GameAttributeSlot {
     HELMET,
     CHESTPLATE,
     LEGGINGS,
-    BOOTS
+    BOOTS,
+    OFFHAND
 }

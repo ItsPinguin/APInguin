@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import ping.Config;
 import ping.mc.game.attribute.GameAttribute;
 import ping.mc.game.attribute.GameAttributeModifier;
+import ping.mc.game.attribute.GameAttributeSlot;
 import ping.mc.game.item.GameItem;
 
 import java.io.*;
@@ -84,12 +85,18 @@ public class GamePlayer implements Serializable {
         GameItem hand=new GameItem(player.getInventory().getItemInMainHand());
         GameItem offhand=new GameItem(player.getInventory().getItemInOffHand());
         List<GameAttributeModifier> modifiers=new ArrayList<>();
-        modifiers.addAll(helmet.getAttribute(attribute));
-        modifiers.addAll(chestplate.getAttribute(attribute));
-        modifiers.addAll(leggings.getAttribute(attribute));
-        modifiers.addAll(boots.getAttribute(attribute));
-        modifiers.addAll(hand.getAttribute(attribute));
-        modifiers.addAll(offhand.getAttribute(attribute));
+        GameAttributeSlot helmetSlot=helmet.getGameItemBase().getType().getGameAttributeSlot();
+        GameAttributeSlot chestplateSlot=chestplate.getGameItemBase().getType().getGameAttributeSlot();
+        GameAttributeSlot leggingsSlot=leggings.getGameItemBase().getType().getGameAttributeSlot();
+        GameAttributeSlot bootsSlot=boots.getGameItemBase().getType().getGameAttributeSlot();
+        GameAttributeSlot handSlot=hand.getGameItemBase().getType().getGameAttributeSlot();
+        GameAttributeSlot offhandSlot=offhand.getGameItemBase().getType().getGameAttributeSlot();
+        if (helmetSlot== GameAttributeSlot.HELMET || helmetSlot== GameAttributeSlot.ANY)modifiers.addAll(helmet.getAttribute(attribute));
+        if (chestplateSlot== GameAttributeSlot.CHESTPLATE || chestplateSlot== GameAttributeSlot.ANY)modifiers.addAll(chestplate.getAttribute(attribute));
+        if (leggingsSlot== GameAttributeSlot.LEGGINGS || leggingsSlot== GameAttributeSlot.ANY)modifiers.addAll(leggings.getAttribute(attribute));
+        if (bootsSlot== GameAttributeSlot.BOOTS || bootsSlot== GameAttributeSlot.ANY)modifiers.addAll(boots.getAttribute(attribute));
+        if (handSlot== GameAttributeSlot.HAND || handSlot== GameAttributeSlot.ANY)modifiers.addAll(hand.getAttribute(attribute));
+        if (offhandSlot== GameAttributeSlot.OFFHAND || offhandSlot== GameAttributeSlot.ANY)modifiers.addAll(offhand.getAttribute(attribute));
         return GameAttributeModifier.calculate(modifiers);
     }
 }
