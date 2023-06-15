@@ -6,18 +6,18 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.PluginEnableEvent;
 import org.bukkit.scheduler.BukkitRunnable;
+import ping.Config;
 import ping.GameAPI;
-import ping.utils.Config;
 
 public class GameProfileEvents implements Listener {
     @EventHandler
     public void join(PlayerJoinEvent e){
-        new GamePlayerProfile(e.getPlayer().getUniqueId()).getCurrentProfile().load(e.getPlayer());
+        new GamePlayer(e.getPlayer().getUniqueId()).getCurrentProfile().load(e.getPlayer());
     }
 
     @EventHandler
     public void leave(PlayerQuitEvent e){
-        GamePlayerProfile profile=new GamePlayerProfile(e.getPlayer().getUniqueId());
+        GamePlayer profile=new GamePlayer(e.getPlayer().getUniqueId());
         profile.save();
         GameProfiles.profiles.remove(profile.getCurrentProfile().uuid);
         GameProfiles.playerProfiles.remove(profile.uuid);

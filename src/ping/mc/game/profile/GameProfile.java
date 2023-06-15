@@ -2,7 +2,7 @@ package ping.mc.game.profile;
 
 import de.tr7zw.nbtapi.NBTFile;
 import org.bukkit.entity.Player;
-import ping.utils.Config;
+import ping.Config;
 
 import java.io.File;
 import java.io.IOException;

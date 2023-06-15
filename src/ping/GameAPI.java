@@ -10,7 +10,6 @@ import ping.mc.game.item.ability.GameAbilityEvents;
 import ping.mc.game.item.type.GameTypes;
 import ping.mc.game.profile.GameProfileEvents;
 import ping.mc.game.rarity.GameRarities;
-import ping.utils.Config;
 
 import java.io.File;
 import java.nio.file.Paths;
@@ -22,7 +21,7 @@ public class GameAPI extends JavaPlugin {
     @Override
     public void onEnable() {
         PLUGIN=this;
-        LOGGER=Logger.getLogger("GameAPI");
+        LOGGER=this.getLogger();
         LOGGER.info("Enabling plugin ...");
         new File(Config.PLAYER_PROFILES_DIRECTORY).mkdirs();
         new File(Config.PROFILES_DIRECTORY).mkdirs();

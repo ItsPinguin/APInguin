@@ -10,13 +10,15 @@ public class GameType {
     String name="Item";
     String id="ITEM";
     List<String> tags=new ArrayList<>();
+    GameAttributeSlot gameAttributeSlot=GameAttributeSlot.ANY;
 
     public GameType(String id) {
         this.id=id;
     }
     public GameType(JSONObject jsonObject) {
         id= (String) jsonObject.getOrDefault("id","ITEM");
-        name= (String) jsonObject.getOrDefault("nale","COMMON");
+        name= (String) jsonObject.getOrDefault("name","COMMON");
+        gameAttributeSlot= GameAttributeSlot.valueOf((String) jsonObject.getOrDefault("slot","ANY"));
         if (jsonObject.get("tags")!=null){
             JSONArray tagList= (JSONArray) jsonObject.get("tags");
             tags.addAll(tagList);
@@ -32,8 +34,9 @@ public class GameType {
         return name;
     }
 
-    public void setName(String name) {
+    public GameType setName(String name) {
         this.name = name;
+        return this;
     }
 
     public String getId() {
@@ -46,5 +49,14 @@ public class GameType {
 
     public void setTags(List<String> tags) {
         this.tags = tags;
+    }
+
+    public GameAttributeSlot getGameAttributeSlot() {
+        return gameAttributeSlot;
+    }
+
+    public GameType setGameAttributeSlot(GameAttributeSlot gameAttributeSlot) {
+        this.gameAttributeSlot = gameAttributeSlot;
+        return this;
     }
 }

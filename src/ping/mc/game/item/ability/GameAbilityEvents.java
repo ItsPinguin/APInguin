@@ -9,7 +9,7 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import ping.mc.game.item.GameItem;
 import ping.mc.game.item.GameItemBase;
-import ping.mc.game.profile.GamePlayerProfile;
+import ping.mc.game.profile.GamePlayer;
 import ping.mc.game.profile.GameProfile;
 
 public class GameAbilityEvents implements Listener {
@@ -75,8 +75,8 @@ public class GameAbilityEvents implements Listener {
             if (GameAbilities.getAbility(ability)!=null&& GameAbilities.getAbility(ability).getAbilityInfo().getAbilityType()==type){
                 GameAbility ability1= GameAbilities.getAbility(ability);
                 if(ability1.trigger(player)){
-                    if (ability1.getAbilityInfo().getManaCost()<= (new GamePlayerProfile(player.getUniqueId()).getCurrentProfile().getDouble("mana"))){
-                        GameProfile profile=new GamePlayerProfile(player.getUniqueId()).getCurrentProfile();
+                    if (ability1.getAbilityInfo().getManaCost()<= (new GamePlayer(player.getUniqueId()).getCurrentProfile().getDouble("mana"))){
+                        GameProfile profile=new GamePlayer(player.getUniqueId()).getCurrentProfile();
                         profile.setDouble("mana",profile.getDouble("mana")-ability1.getAbilityInfo().getManaCost());
                     }
                 }

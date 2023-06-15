@@ -1,4 +1,4 @@
-package ping.utils;
+package ping;
 
 public class Config {
     public static String SERVER_NAME="My Server";

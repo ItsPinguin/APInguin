@@ -68,7 +68,7 @@ public class GameItemBase {
                         } else {
                             JSONObject jsonObject2 = (JSONObject) jsonObject1.get(o);
                             attributes.add(new GameAttributeModifier(
-                                    (double) (jsonObject2.getOrDefault("value", o)),
+                                    (Double) (jsonObject2.getOrDefault("value", o)),
                                     GameAttributeModifier.Operation.valueOf((String) jsonObject2.getOrDefault("operation", "ADD")),
                                     value)
                             );
