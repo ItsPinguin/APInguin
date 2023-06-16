@@ -1,6 +1,7 @@
 package ping.mc.game.item;
 
 import de.tr7zw.nbtapi.NBTItem;
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import ping.mc.game.attribute.GameAttribute;
 import ping.mc.game.attribute.GameAttributeModifier;
@@ -10,7 +11,7 @@ import java.util.Objects;
 
 public class GameItem {
     ItemStack itemStack;
-    GameItemBase gameItemBase;
+    GameItemBase gameItemBase=new GameItemBase("NULL");
     boolean isGameItem=false;
 
     public GameItem(ItemStack itemStack){
@@ -21,7 +22,7 @@ public class GameItem {
 
     public GameItem identify(ItemStack itemStack){
         this.itemStack=itemStack;
-        if (itemStack==null){
+        if (itemStack==null || itemStack.getType()== Material.AIR || new NBTItem(itemStack).getCompound("Data")==null){
             return this;
         }
         String ID=new NBTItem(itemStack).getCompound("Data").getString("id");

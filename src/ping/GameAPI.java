@@ -28,15 +28,19 @@ public class GameAPI extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new GameAbilityEvents(),this);
         Bukkit.getPluginManager().registerEvents(new GameProfileEvents(),this);
         GameItems.setItemBuilder("default",new DefaultItemBuilder());
-        GameAttributes.loadAllFromPath(Paths.get(Config.ATTRIBUTE_LOADING_PATH),"-");
-        GameRarities.loadAllFromPath(Paths.get(Config.RARITIES_LOADING_PATH),"-");
-        GameTypes.loadAllFromPath(Paths.get(Config.TYPE_LOADING_PATH),"-");
-        GameItems.loadAllFromPath(Paths.get(Config.ITEMS_LOADING_PATH),"-");
+        loadAssets();
         LOGGER.info("Plugin enabled!");
     }
 
     @Override
     public void onDisable() {
         LOGGER.info("Plugin disabled!");
+    }
+
+    public static void loadAssets(){
+        GameAttributes.loadAllFromPath(Paths.get(Config.ATTRIBUTE_LOADING_PATH),"-");
+        GameRarities.loadAllFromPath(Paths.get(Config.RARITIES_LOADING_PATH),"-");
+        GameTypes.loadAllFromPath(Paths.get(Config.TYPE_LOADING_PATH),"-");
+        GameItems.loadAllFromPath(Paths.get(Config.ITEMS_LOADING_PATH),"-");
     }
 }

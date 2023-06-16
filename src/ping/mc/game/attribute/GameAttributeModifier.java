@@ -1,5 +1,7 @@
 package ping.mc.game.attribute;
 
+import org.json.simple.JSONObject;
+
 import java.util.List;
 
 public class GameAttributeModifier {
@@ -16,6 +18,17 @@ public class GameAttributeModifier {
     public GameAttributeModifier(Operation operation, GameAttribute attribute) {
         this.operation = operation;
         this.attribute = attribute;
+    }
+
+    public GameAttributeModifier(Object object,GameAttribute gameAttribute){
+        if (!(object instanceof JSONObject)) {
+            value=(Double.parseDouble(object.toString()));
+        } else {
+            JSONObject jsonObject2 = (JSONObject) object;
+            value=Double.parseDouble(jsonObject2.getOrDefault("value", "0").toString());
+            operation=GameAttributeModifier.Operation.valueOf((String) jsonObject2.getOrDefault("operation", "ADD"));
+        }
+        attribute=gameAttribute;
     }
 
     public double getValue() {

@@ -30,8 +30,11 @@ public class GameProfile extends NBTFile {
     }
 
     public void load(Player player){
-        player.getInventory().setContents(Objects.requireNonNull(this.getOrCreateCompound("inventory").getItemStackArray("content")));
-        player.getInventory().setArmorContents(Objects.requireNonNull(this.getOrCreateCompound("inventory").getItemStackArray("armor")));
-        player.getInventory().setExtraContents(Objects.requireNonNull(this.getOrCreateCompound("inventory").getItemStackArray("extra")));
+        if (this.getOrCreateCompound("inventory").getItemStackArray("content")!=null)
+            player.getInventory().setContents(Objects.requireNonNull(this.getOrCreateCompound("inventory").getItemStackArray("content")));
+        if (this.getOrCreateCompound("inventory").getItemStackArray("armor")!=null)
+            player.getInventory().setArmorContents(Objects.requireNonNull(this.getOrCreateCompound("inventory").getItemStackArray("armor")));
+        if (this.getOrCreateCompound("inventory").getItemStackArray("extra")!=null)
+            player.getInventory().setExtraContents(Objects.requireNonNull(this.getOrCreateCompound("inventory").getItemStackArray("extra")));
     }
 }

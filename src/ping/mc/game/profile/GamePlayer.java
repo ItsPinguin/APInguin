@@ -86,16 +86,16 @@ public class GamePlayer implements Serializable {
         GameItem offhand=new GameItem(player.getInventory().getItemInOffHand());
         List<GameAttributeModifier> modifiers=new ArrayList<>();
         GameAttributeSlot helmetSlot=helmet.getGameItemBase().getType().getGameAttributeSlot();
-        GameAttributeSlot chestplateSlot=chestplate.getGameItemBase().getType().getGameAttributeSlot();
-        GameAttributeSlot leggingsSlot=leggings.getGameItemBase().getType().getGameAttributeSlot();
-        GameAttributeSlot bootsSlot=boots.getGameItemBase().getType().getGameAttributeSlot();
-        GameAttributeSlot handSlot=hand.getGameItemBase().getType().getGameAttributeSlot();
-        GameAttributeSlot offhandSlot=offhand.getGameItemBase().getType().getGameAttributeSlot();
         if (helmetSlot== GameAttributeSlot.HELMET || helmetSlot== GameAttributeSlot.ANY)modifiers.addAll(helmet.getAttribute(attribute));
+        GameAttributeSlot chestplateSlot=chestplate.getGameItemBase().getType().getGameAttributeSlot();
         if (chestplateSlot== GameAttributeSlot.CHESTPLATE || chestplateSlot== GameAttributeSlot.ANY)modifiers.addAll(chestplate.getAttribute(attribute));
+        GameAttributeSlot leggingsSlot=leggings.getGameItemBase().getType().getGameAttributeSlot();
         if (leggingsSlot== GameAttributeSlot.LEGGINGS || leggingsSlot== GameAttributeSlot.ANY)modifiers.addAll(leggings.getAttribute(attribute));
+        GameAttributeSlot bootsSlot=boots.getGameItemBase().getType().getGameAttributeSlot();
         if (bootsSlot== GameAttributeSlot.BOOTS || bootsSlot== GameAttributeSlot.ANY)modifiers.addAll(boots.getAttribute(attribute));
+        GameAttributeSlot handSlot=hand.getGameItemBase().getType().getGameAttributeSlot();
         if (handSlot== GameAttributeSlot.HAND || handSlot== GameAttributeSlot.ANY)modifiers.addAll(hand.getAttribute(attribute));
+        GameAttributeSlot offhandSlot=offhand.getGameItemBase().getType().getGameAttributeSlot();
         if (offhandSlot== GameAttributeSlot.OFFHAND || offhandSlot== GameAttributeSlot.ANY)modifiers.addAll(offhand.getAttribute(attribute));
         return GameAttributeModifier.calculate(modifiers);
     }

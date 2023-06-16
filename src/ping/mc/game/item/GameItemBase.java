@@ -5,6 +5,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import ping.mc.game.attribute.GameAttribute;
 import ping.mc.game.attribute.GameAttributeModifier;
+import ping.mc.game.attribute.GameAttributeSlot;
 import ping.mc.game.attribute.GameAttributes;
 import ping.mc.game.item.type.GameType;
 import ping.mc.game.rarity.GameRarity;
@@ -19,7 +20,7 @@ public class GameItemBase {
     private String name="Default Item";
     private String description =null;
     private GameRarity rarity=new GameRarity("COMMON");
-    private GameType type=new GameType("ITEM");
+    private GameType type=new GameType("ITEM").setGameAttributeSlot(GameAttributeSlot.ANY);
     private String itemBuilder="default";
 
     private boolean shiny=false;
@@ -57,22 +58,12 @@ public class GameItemBase {
         type= (GameType) jsonObject.getOrDefault("type", type);
         itemBuilder= (String) jsonObject.getOrDefault("item_builder",itemBuilder);
         shiny= (boolean) jsonObject.getOrDefault("shiny",shiny);
-
         if (jsonObject.get("attributes")!=null){
             JSONObject jsonObject1=((JSONObject) jsonObject.get("attributes"));
             for (GameAttribute value : GameAttributes.getAttributes().values()) {
                 for (Object o : jsonObject1.keySet()) {
                     if (Objects.equals(o, value.getId())) {
-                        if (!(jsonObject1.get(o) instanceof JSONObject)) {
-                            attributes.add(new GameAttributeModifier((Double) jsonObject1.get(o), GameAttributeModifier.Operation.ADD, value));
-                        } else {
-                            JSONObject jsonObject2 = (JSONObject) jsonObject1.get(o);
-                            attributes.add(new GameAttributeModifier(
-                                    (Double) (jsonObject2.getOrDefault("value", o)),
-                                    GameAttributeModifier.Operation.valueOf((String) jsonObject2.getOrDefault("operation", "ADD")),
-                                    value)
-                            );
-                        }
+                        attributes.add(new GameAttributeModifier(jsonObject1.get(o),value));
                         break;
                     }
                 }
