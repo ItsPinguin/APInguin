@@ -23,11 +23,11 @@ public class GameAPI extends JavaPlugin {
         PLUGIN=this;
         LOGGER=this.getLogger();
         LOGGER.info("Enabling plugin ...");
+        loadConfigAndDefaults();
         new File(Config.PLAYER_PROFILES_DIRECTORY).mkdirs();
         new File(Config.PROFILES_DIRECTORY).mkdirs();
-        Bukkit.getPluginManager().registerEvents(new GameAbilityEvents(),this);
-        Bukkit.getPluginManager().registerEvents(new GameProfileEvents(),this);
         GameItems.setItemBuilder("default",new DefaultItemBuilder());
+        registerEvents();
         loadAssets();
         LOGGER.info("Plugin enabled!");
     }
@@ -42,5 +42,28 @@ public class GameAPI extends JavaPlugin {
         GameRarities.loadAllFromPath(Paths.get(Config.RARITIES_LOADING_PATH),"-");
         GameTypes.loadAllFromPath(Paths.get(Config.TYPE_LOADING_PATH),"-");
         GameItems.loadAllFromPath(Paths.get(Config.ITEMS_LOADING_PATH),"-");
+    }
+
+    public void registerEvents(){
+        Bukkit.getPluginManager().registerEvents(new GameAbilityEvents(),this);
+        Bukkit.getPluginManager().registerEvents(new GameProfileEvents(),this);
+    }
+
+    public void loadConfigAndDefaults(){
+        getConfig().addDefault("server.name","My server");
+        getConfig().addDefault("server.ip","my.server.ip.gg");
+        getConfig().addDefault("server.discord","https://discord.gg/tzwCuDKdhn");
+        getConfig().addDefault("game.max_mana",50d);
+        getConfig().addDefault("game.max_health",50d);
+        getConfig().addDefault("game.assets.items","plugins/GameAPI/item");
+        getConfig().addDefault("game.assets.rarities","plugins/GameAPI/rarity");
+        getConfig().addDefault("game.assets.types","plugins/GameAPI/type");
+        getConfig().addDefault("game.assets.attributes","plugins/GameAPI/attribute");
+        getConfig().addDefault("game.profile.profiles_directory","plugins/GameAPI/profiles/");
+        getConfig().addDefault("game.profile.player_profiles_directory","plugins/GameAPI/player_profiles/");
+        getConfig().addDefault("game.profile.ticks_save_every",20*60*5);
+        getConfig().options().copyDefaults(true);
+        saveConfig();
+        reloadConfig();
     }
 }
