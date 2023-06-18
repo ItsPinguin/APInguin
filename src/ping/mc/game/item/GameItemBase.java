@@ -8,6 +8,7 @@ import ping.mc.game.attribute.GameAttributeModifier;
 import ping.mc.game.attribute.GameAttributeSlot;
 import ping.mc.game.attribute.GameAttributes;
 import ping.mc.game.item.type.GameType;
+import ping.mc.game.rarity.GameRarities;
 import ping.mc.game.rarity.GameRarity;
 
 import java.util.ArrayList;
@@ -54,7 +55,7 @@ public class GameItemBase {
         name= (String) jsonObject.getOrDefault("name",name);
         material= Material.valueOf((String) jsonObject.getOrDefault("material", "STICK"));
         description= (String) jsonObject.getOrDefault("description",description);
-        rarity= (GameRarity) jsonObject.getOrDefault("rarity",rarity);
+        rarity= GameRarities.getRarity((String) jsonObject.getOrDefault("rarity",rarity));
         type= (GameType) jsonObject.getOrDefault("type", type);
         itemBuilder= (String) jsonObject.getOrDefault("item_builder",itemBuilder);
         shiny= (boolean) jsonObject.getOrDefault("shiny",shiny);

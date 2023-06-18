@@ -43,7 +43,7 @@ public class GameRarities {
                 AtomicInteger loaded= new AtomicInteger();
                 Files.walk(path).forEach(filePath ->{
                     if (filePath.toFile().isFile()&& !filePath.toString().startsWith(excludePrefix)){
-                        GameRarity rarity=new GameRarity(FileUtils.readJSONObject(path.toString()));
+                        GameRarity rarity=new GameRarity(FileUtils.readJSONObject(filePath.toString()));
                         rarities.put(rarity.getId(), rarity);
                         loaded.addAndGet(1);
                     }

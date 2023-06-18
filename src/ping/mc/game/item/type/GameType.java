@@ -18,7 +18,7 @@ public class GameType {
     }
     public GameType(JSONObject jsonObject) {
         id= (String) jsonObject.getOrDefault("id","ITEM");
-        name= (String) jsonObject.getOrDefault("name","COMMON");
+        name= (String) jsonObject.getOrDefault("name","Type");
         gameAttributeSlot= GameAttributeSlot.valueOf((String) jsonObject.getOrDefault("slot","ANY"));
         if (jsonObject.get("tags")!=null){
             JSONArray tagList= (JSONArray) jsonObject.get("tags");

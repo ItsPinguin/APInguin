@@ -42,7 +42,7 @@ public class GameTypes {
                 AtomicInteger loaded= new AtomicInteger();
                 Files.walk(path).forEach(filePath ->{
                     if (filePath.toFile().isFile()&& !filePath.toString().startsWith(excludePrefix)){
-                        GameType type=new GameType(FileUtils.readJSONObject(path.toString()));
+                        GameType type=new GameType(FileUtils.readJSONObject(filePath.toString()));
                         types.put(type.getId(), type);
                         loaded.addAndGet(1);
                     }
