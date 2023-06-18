@@ -7,20 +7,20 @@ import java.util.List;
 public class GameAttributeModifier {
     private double value=0d;
     private GameAttributeModifier.Operation operation = Operation.ADD;
-    private GameAttribute attribute;
+    private String attribute;
 
-    public GameAttributeModifier(double value, Operation operation,GameAttribute attribute) {
+    public GameAttributeModifier(double value, Operation operation,String attribute) {
         this.value = value;
         this.operation = operation;
         this.attribute = attribute;
     }
 
-    public GameAttributeModifier(Operation operation, GameAttribute attribute) {
+    public GameAttributeModifier(Operation operation, String attribute) {
         this.operation = operation;
         this.attribute = attribute;
     }
 
-    public GameAttributeModifier(Object object,GameAttribute gameAttribute){
+    public GameAttributeModifier(Object object,String gameAttribute){
         if (!(object instanceof JSONObject)) {
             value=(Double.parseDouble(object.toString()));
         } else {
@@ -48,7 +48,7 @@ public class GameAttributeModifier {
         ADD_PERCENT
     }
 
-    public GameAttribute getAttribute() {
+    public String getAttribute() {
         return attribute;
     }
 

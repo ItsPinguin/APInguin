@@ -2,6 +2,7 @@ package ping.mc.game.profile;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.json.simple.JSONObject;
 import ping.Config;
 import ping.GameAPI;
 import ping.mc.game.attribute.GameAttribute;
@@ -9,8 +10,11 @@ import ping.mc.game.attribute.GameAttributeModifier;
 import ping.mc.game.attribute.GameAttributeSlot;
 import ping.mc.game.attribute.GameAttributes;
 import ping.mc.game.item.GameItem;
+import ping.utils.FileUtils;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -28,13 +32,9 @@ public class GamePlayer implements Serializable {
             profiles=profile.profiles;
         }
         else if (new File(Config.PLAYER_PROFILES_DIRECTORY+uuid).exists()){
-            try {
-                GamePlayer profile= (GamePlayer) new ObjectInputStream(new FileInputStream(Config.PLAYER_PROFILES_DIRECTORY + uuid)).readObject();
-                currentProfile=profile.currentProfile;
-                profiles=profile.profiles;
-            } catch (IOException | ClassNotFoundException e) {
-                throw new RuntimeException(e);
-            }
+            JSONObject jsonObject=FileUtils.readJSONObject(Config.PLAYER_PROFILES_DIRECTORY+uuid);
+            currentProfile= UUID.fromString((String) jsonObject.get("current"));
+            profiles= (List<UUID>) jsonObject.get("profiles");
         } else {
             currentProfile=UUID.randomUUID();
             GameProfile profile=getCurrentProfile();
@@ -43,16 +43,15 @@ public class GamePlayer implements Serializable {
     }
 
     public void save(){
-        try {
-            GameProfile profile= getCurrentProfile();
-            Player player= Bukkit.getPlayer(uuid);
-            assert player != null;
-            profile.saveData(player);
-            profile.save();
-            new ObjectOutputStream(new FileOutputStream(Config.PLAYER_PROFILES_DIRECTORY+uuid)).writeObject(this);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        GameProfile profile= getCurrentProfile();
+        Player player= Bukkit.getPlayer(uuid);
+        assert player != null;
+        profile.saveData(player);
+        profile.save();
+        JSONObject jsonObject=new JSONObject();
+        jsonObject.put("current",currentProfile.toString());
+        jsonObject.put("profiles",profiles);
+        FileUtils.writeJSONObject(Config.PLAYER_PROFILES_DIRECTORY+uuid,jsonObject);
     }
 
     public void switchToProfile(UUID uuid){
@@ -77,7 +76,7 @@ public class GamePlayer implements Serializable {
         return profiles;
     }
 
-    public double getAttribute(GameAttribute attribute){
+    protected double calculateAttribute(String attribute){
         Player player=Bukkit.getPlayer(uuid);
         assert player != null;
         GameItem helmet=new GameItem(player.getInventory().getHelmet());
@@ -99,12 +98,24 @@ public class GamePlayer implements Serializable {
         if (handSlot== GameAttributeSlot.HAND || handSlot== GameAttributeSlot.ANY)modifiers.addAll(hand.getAttribute(attribute));
         GameAttributeSlot offhandSlot=offhand.getGameItemBase().getType().getGameAttributeSlot();
         if (offhandSlot== GameAttributeSlot.OFFHAND || offhandSlot== GameAttributeSlot.ANY)modifiers.addAll(offhand.getAttribute(attribute));
+        modifiers.add(new GameAttributeModifier(GameAPI.PLUGIN.getConfig().getDouble("attributes."+attribute,0),attribute));
         return GameAttributeModifier.calculate(modifiers);
+    }
+    protected double calculateAttribute(GameAttribute attribute){
+        return calculateAttribute(attribute.getId());
     }
 
     public void updateAttribute(){
-        GameAttributes.getAttributes().values().forEach(attribute -> {
-            getCurrentProfile().getOrCreateCompound("stats").setDouble(attribute.getId(), getAttribute(attribute)+ GameAPI.PLUGIN.getConfig().getDouble(attribute.getId(),0));
+        GameAttributes.attributes.values().forEach(attribute -> {
+            getCurrentProfile().getOrCreateCompound("stats").setDouble(attribute.getId(), calculateAttribute(attribute));
         });
+    }
+
+    public double getAttribute(String attribute){
+        return getCurrentProfile().getOrCreateCompound("stats").getDouble(attribute);
+    }
+
+    public double getAttribute(GameAttribute attribute){
+        return getAttribute(attribute.getId());
     }
 }

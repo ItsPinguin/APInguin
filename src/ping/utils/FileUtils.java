@@ -103,10 +103,10 @@ public class FileUtils {
 
     public static JSONObject readJSONObject(String path){
         JSONParser jsonParser = new JSONParser();
-
-        try (FileReader reader = new FileReader(path))
-        {
-            return (JSONObject) jsonParser.parse(reader);
+        try {
+            String string=new String(new FileInputStream(path).readAllBytes());
+            string=string.replaceAll("&","§");
+            return (JSONObject) jsonParser.parse(string);
         } catch (IOException | ParseException e) {
             e.printStackTrace();
         }

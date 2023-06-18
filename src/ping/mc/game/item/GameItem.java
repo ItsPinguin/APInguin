@@ -3,9 +3,9 @@ package ping.mc.game.item;
 import de.tr7zw.nbtapi.NBTItem;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import ping.mc.game.attribute.GameAttribute;
 import ping.mc.game.attribute.GameAttributeModifier;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -45,9 +45,9 @@ public class GameItem {
         return isGameItem;
     }
 
-    public List<GameAttributeModifier> getAttribute(GameAttribute attribute){
-        List<GameAttributeModifier> modifiers=gameItemBase.getAttributes();
-        modifiers.removeIf(modifier -> !Objects.equals(modifier.getAttribute().getId(), attribute.getId()));
+    public List<GameAttributeModifier> getAttribute(String attribute){
+        List<GameAttributeModifier> modifiers=new ArrayList<>(gameItemBase.getAttributes());
+        modifiers.removeIf(modifier -> !Objects.equals(modifier.getAttribute(), attribute));
         return modifiers;
     }
 }

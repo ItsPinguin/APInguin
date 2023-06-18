@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class GameAttributes {
     private static GameAttributeBuilder attributeBuilder=new GameAttributeBuilder() {
@@ -15,14 +16,7 @@ public class GameAttributes {
             return GameAttributeBuilder.super.build(gameAttributeModifier);
         }
     };
-    static HashMap<String, GameAttribute> attributes=new HashMap<>();
-    public static void addAttribute(GameAttribute attribute){
-        attributes.put(attribute.getId(), attribute);
-    }
-
-    public static GameAttribute getAttribute(String key){
-        return attributes.get(key);
-    }
+    public static HashMap<String, GameAttribute> attributes=new HashMap<>();
 
     public static GameAttributeBuilder getAttributeBuilder() {
         return attributeBuilder;
@@ -32,10 +26,6 @@ public class GameAttributes {
         GameAttributes.attributeBuilder = attributeBuilder;
     }
 
-    public static HashMap<String, GameAttribute> getAttributes() {
-        return attributes;
-    }
-
     public static void loadAllFromPath(Path path, String excludePrefix){
         try {
             if (path.toFile().isFile() && !path.toString().startsWith(excludePrefix)){
@@ -43,12 +33,15 @@ public class GameAttributes {
                 attributes.put(attribute.getId(), attribute);
             } else if (path.toFile().isDirectory() && !path.toString().startsWith(excludePrefix)) {
                 GameAPI.LOGGER.info("Loading attributes from directory: "+path.toFile());
+                AtomicInteger loaded= new AtomicInteger();
                 Files.walk(path).forEach(filePath ->{
                     if (filePath.toFile().isFile()&& !filePath.toString().startsWith(excludePrefix)){
-                        GameAttribute attribute=new GameAttribute(FileUtils.readJSONObject(path.toString()));
+                        GameAttribute attribute=new GameAttribute(FileUtils.readJSONObject(filePath.toString()));
                         attributes.put(attribute.getId(), attribute);
+                        loaded.addAndGet(1);
                     }
                 });
+                System.out.println("Loaded "+loaded+" attributes from files");
             }
         } catch (IOException e) {
             throw new RuntimeException(e);

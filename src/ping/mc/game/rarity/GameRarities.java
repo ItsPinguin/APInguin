@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class GameRarities {
     private static GameRarityBuilder rarityBuilder=new GameRarityBuilder() {
@@ -39,12 +40,15 @@ public class GameRarities {
                 rarities.put(rarity.getId(), rarity);
             } else if (path.toFile().isDirectory() && !path.toString().startsWith(excludePrefix)) {
                 GameAPI.LOGGER.info("Loading rarities from directory: "+path.toFile());
+                AtomicInteger loaded= new AtomicInteger();
                 Files.walk(path).forEach(filePath ->{
                     if (filePath.toFile().isFile()&& !filePath.toString().startsWith(excludePrefix)){
                         GameRarity rarity=new GameRarity(FileUtils.readJSONObject(path.toString()));
                         rarities.put(rarity.getId(), rarity);
+                        loaded.addAndGet(1);
                     }
                 });
+                System.out.println("Loaded "+loaded+" rarities from files");
             }
         } catch (IOException e) {
             throw new RuntimeException(e);

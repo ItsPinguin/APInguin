@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class GameTypes {
     static HashMap<String, GameType> types=new HashMap<>();
@@ -38,12 +39,15 @@ public class GameTypes {
                 types.put(type.getId(), type);
             } else if (path.toFile().isDirectory() && !path.toString().startsWith(excludePrefix)) {
                 GameAPI.LOGGER.info("Loading types from directory: "+path.toFile());
+                AtomicInteger loaded= new AtomicInteger();
                 Files.walk(path).forEach(filePath ->{
                     if (filePath.toFile().isFile()&& !filePath.toString().startsWith(excludePrefix)){
                         GameType type=new GameType(FileUtils.readJSONObject(path.toString()));
                         types.put(type.getId(), type);
+                        loaded.addAndGet(1);
                     }
                 });
+                System.out.println("Loaded "+loaded+" types from files");
             }
         } catch (IOException e) {
             throw new RuntimeException(e);

@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class GameItems {
     private static HashMap<String, GameItemBuilder> itemBuilders=new HashMap<>();
@@ -30,6 +31,7 @@ public class GameItems {
         item.getOrCreateCompound("Data").setString("id",ID);
         itemStack=item.getItem();
         ItemMeta itm=itemStack.getItemMeta();
+        assert itm != null;
         itm.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_DESTROYS,ItemFlag.HIDE_DYE,ItemFlag.HIDE_ENCHANTS,ItemFlag.HIDE_PLACED_ON,ItemFlag.HIDE_POTION_EFFECTS,ItemFlag.HIDE_UNBREAKABLE);
         itemStack.setItemMeta(itm);
         return getItemBuilder("default").build(item.getItem());
@@ -45,11 +47,14 @@ public class GameItems {
                 addItem(new GameItemBase(FileUtils.readJSONObject(path.toString())));
             } else if (path.toFile().isDirectory() && !path.toString().startsWith(excludePrefix)) {
                 GameAPI.LOGGER.info("Loading items from directory: "+path.toFile());
+                AtomicInteger loaded= new AtomicInteger();
                 Files.walk(path).forEach(filePath ->{
                     if (filePath.toFile().isFile()&& !filePath.toString().startsWith(excludePrefix)){
                         addItem(new GameItemBase(FileUtils.readJSONObject(filePath.toString())));
+                        loaded.addAndGet(1);
                     }
                 });
+                System.out.println("Loaded "+loaded+" items from files");
             }
         } catch (IOException e) {
             throw new RuntimeException(e);

@@ -45,9 +45,9 @@ public class DefaultItemBuilder implements GameItemBuilder {
         if (stats==null){
             return statLore;
         }
-        for (GameAttribute attribute : GameAttributes.getAttributes().values()){
+        for (GameAttribute attribute : GameAttributes.attributes.values()){
             for (GameAttributeModifier stat : stats) {
-                if (Objects.equals(stat.getAttribute().getId(), attribute.getId())){
+                if (Objects.equals(stat.getAttribute(), attribute.getId())){
                     statLore.add("§7"+attribute.getName()+": "+GameAttributes.getAttributeBuilder().build(stat));
                 }
             }

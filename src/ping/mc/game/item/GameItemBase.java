@@ -60,10 +60,11 @@ public class GameItemBase {
         shiny= (boolean) jsonObject.getOrDefault("shiny",shiny);
         if (jsonObject.get("attributes")!=null){
             JSONObject jsonObject1=((JSONObject) jsonObject.get("attributes"));
-            for (GameAttribute value : GameAttributes.getAttributes().values()) {
+            for (GameAttribute value : GameAttributes.attributes.values()) {
                 for (Object o : jsonObject1.keySet()) {
                     if (Objects.equals(o, value.getId())) {
-                        attributes.add(new GameAttributeModifier(jsonObject1.get(o),value));
+                        attributes.add(new GameAttributeModifier(jsonObject1.get(o),value.getId()));
+                        System.out.println("blabala" + value.getId() + " eeeeeee " + id);
                         break;
                     }
                 }
