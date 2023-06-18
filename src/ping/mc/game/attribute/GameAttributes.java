@@ -41,7 +41,7 @@ public class GameAttributes {
                         loaded.addAndGet(1);
                     }
                 });
-                System.out.println("Loaded "+loaded+" attributes from files");
+                GameAPI.LOGGER.info("Loaded "+loaded+" attributes from files");
             }
         } catch (IOException e) {
             throw new RuntimeException(e);

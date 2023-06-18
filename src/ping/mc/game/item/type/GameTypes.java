@@ -47,7 +47,7 @@ public class GameTypes {
                         loaded.addAndGet(1);
                     }
                 });
-                System.out.println("Loaded "+loaded+" types from files");
+                GameAPI.LOGGER.info("Loaded "+loaded+" types from files");
             }
         } catch (IOException e) {
             throw new RuntimeException(e);

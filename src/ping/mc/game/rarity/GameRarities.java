@@ -48,7 +48,7 @@ public class GameRarities {
                         loaded.addAndGet(1);
                     }
                 });
-                System.out.println("Loaded "+loaded+" rarities from files");
+                GameAPI.LOGGER.info("Loaded "+loaded+" rarities from files");
             }
         } catch (IOException e) {
             throw new RuntimeException(e);

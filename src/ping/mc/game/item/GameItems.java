@@ -54,7 +54,7 @@ public class GameItems {
                         loaded.addAndGet(1);
                     }
                 });
-                System.out.println("Loaded "+loaded+" items from files");
+                GameAPI.LOGGER.info("Loaded "+loaded+" items from files");
             }
         } catch (IOException e) {
             throw new RuntimeException(e);

@@ -64,7 +64,6 @@ public class GameItemBase {
                 for (Object o : jsonObject1.keySet()) {
                     if (Objects.equals(o, value.getId())) {
                         attributes.add(new GameAttributeModifier(jsonObject1.get(o),value.getId()));
-                        System.out.println("blabala" + value.getId() + " eeeeeee " + id);
                         break;
                     }
                 }
