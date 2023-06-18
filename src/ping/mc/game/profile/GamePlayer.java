@@ -3,9 +3,11 @@ package ping.mc.game.profile;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import ping.Config;
+import ping.GameAPI;
 import ping.mc.game.attribute.GameAttribute;
 import ping.mc.game.attribute.GameAttributeModifier;
 import ping.mc.game.attribute.GameAttributeSlot;
+import ping.mc.game.attribute.GameAttributes;
 import ping.mc.game.item.GameItem;
 
 import java.io.*;
@@ -98,5 +100,11 @@ public class GamePlayer implements Serializable {
         GameAttributeSlot offhandSlot=offhand.getGameItemBase().getType().getGameAttributeSlot();
         if (offhandSlot== GameAttributeSlot.OFFHAND || offhandSlot== GameAttributeSlot.ANY)modifiers.addAll(offhand.getAttribute(attribute));
         return GameAttributeModifier.calculate(modifiers);
+    }
+
+    public void updateAttribute(){
+        GameAttributes.getAttributes().values().forEach(attribute -> {
+            getCurrentProfile().getOrCreateCompound("stats").setDouble(attribute.getId(), getAttribute(attribute)+ GameAPI.PLUGIN.getConfig().getDouble(attribute.getId(),0));
+        });
     }
 }
