@@ -107,15 +107,36 @@ public class GamePlayer implements Serializable {
 
     public void updateAttribute(){
         GameAttributes.attributes.values().forEach(attribute -> {
-            getCurrentProfile().getOrCreateCompound("stats").setDouble(attribute.getId(), calculateAttribute(attribute));
+            getCurrentProfile().getOrCreateCompound("attributes").setDouble(attribute.getId(), calculateAttribute(attribute));
         });
     }
 
     public double getAttribute(String attribute){
-        return getCurrentProfile().getOrCreateCompound("stats").getDouble(attribute);
+        return getCurrentProfile().getOrCreateCompound("attributes").getDouble(attribute);
     }
 
     public double getAttribute(GameAttribute attribute){
         return getAttribute(attribute.getId());
+    }
+
+    public double getHealth(){
+        return getCurrentProfile().getOrCreateCompound("stats").getDouble("HEALTH");
+    }
+
+    public void setHealth(Double health){
+        getCurrentProfile().getOrCreateCompound("stats").setDouble("HEALTH", health);
+        Player p=Bukkit.getPlayer(uuid);
+        double maxHealth=getCurrentProfile().getOrCreateCompound("attributes").getDouble("HEALTH");
+        if (health>maxHealth) health=maxHealth;
+        assert p != null;
+        p.setHealth(getHealth()/maxHealth*20);
+    }
+
+    public double getMana(){
+        return getCurrentProfile().getOrCreateCompound("stats").getDouble("MANA");
+    }
+
+    public void setMana(Double health){
+        getCurrentProfile().getOrCreateCompound("stats").setDouble("MANA", health);
     }
 }

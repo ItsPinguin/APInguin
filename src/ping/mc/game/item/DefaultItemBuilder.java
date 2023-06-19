@@ -3,9 +3,12 @@ package ping.mc.game.item;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 import ping.mc.game.attribute.GameAttribute;
 import ping.mc.game.attribute.GameAttributeModifier;
 import ping.mc.game.attribute.GameAttributes;
+import ping.mc.game.item.ability.GameAbilities;
+import ping.mc.game.item.ability.GameAbility;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,8 +29,10 @@ public class DefaultItemBuilder implements GameItemBuilder {
         List<String> lore=new ArrayList<>();
         lore.addAll(stats(gameItem.getGameItemBase().getAttributes()));
         lore.addAll(description(gameItem.getGameItemBase().getDescription()));
+        lore.addAll(abilities(gameItem.getGameItemBase().getAbilities(),itemStack));
         lore.add(typeAndRarity(gameItem));
         itemMeta.setLore(lore);
+        ((LeatherArmorMeta) itemMeta).setColor(gameItem.getGameItemBase().getColor());
         itemStack.setItemMeta(itemMeta);
         return itemStack;
     }
@@ -73,5 +78,15 @@ public class DefaultItemBuilder implements GameItemBuilder {
             return item;
         }
         return item;
+    }
+
+    public static List<String> abilities(List<String> abilities, ItemStack itemStack){
+        List<String> lore = new ArrayList<>();
+        for (String ability : abilities) {
+            GameAbility ability0=GameAbilities.getAbility(ability);
+            assert ability0 != null;
+            lore.add(ability0.getAbilityInfo().getDescription(itemStack));
+        }
+        return lore;
     }
 }

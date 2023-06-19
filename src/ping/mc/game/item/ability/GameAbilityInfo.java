@@ -1,5 +1,7 @@
 package ping.mc.game.item.ability;
 
+import org.bukkit.inventory.ItemStack;
+
 public class GameAbilityInfo {
     private String id="my_id";
     private String name="My Ability";
@@ -27,7 +29,7 @@ public class GameAbilityInfo {
         return this;
     }
 
-    public String getDescription() {
+    public String getDescription(ItemStack itemStack) {
         return description;
     }
 

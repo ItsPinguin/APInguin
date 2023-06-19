@@ -1,5 +1,6 @@
 package ping.mc.game.item;
 
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -29,6 +30,16 @@ public class GameItemBase {
     private List<String> tags = new ArrayList<>();
 
     private List<String> abilities = new ArrayList<>();
+    private Color color=Color.MAROON;
+
+    public Color getColor() {
+        return color;
+    }
+
+    public GameItemBase setColor(Color color) {
+        this.color = color;
+        return this;
+    }
 
     public GameItemBase(String id){
         this.id=id;
@@ -59,6 +70,8 @@ public class GameItemBase {
         type= (GameType) jsonObject.getOrDefault("type", type);
         itemBuilder= (String) jsonObject.getOrDefault("item_builder",itemBuilder);
         shiny= (boolean) jsonObject.getOrDefault("shiny",shiny);
+        String[] color1= ((String) jsonObject.getOrDefault("color", "92:58:29")).split(":");
+        color=Color.fromRGB(Integer.parseInt(color1[0]),Integer.parseInt(color1[1]),Integer.parseInt(color1[2]));
         if (jsonObject.get("attributes")!=null){
             JSONObject jsonObject1=((JSONObject) jsonObject.get("attributes"));
             for (GameAttribute value : GameAttributes.attributes.values()) {
