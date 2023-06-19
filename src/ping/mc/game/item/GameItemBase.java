@@ -55,7 +55,7 @@ public class GameItemBase {
         name= (String) jsonObject.getOrDefault("name",name);
         material= Material.valueOf((String) jsonObject.getOrDefault("material", "STICK"));
         description= (String) jsonObject.getOrDefault("description",description);
-        rarity= GameRarities.getRarity((String) jsonObject.getOrDefault("rarity",rarity));
+        rarity= GameRarities.getRarity((String) jsonObject.getOrDefault("rarity","COMMON"));
         type= (GameType) jsonObject.getOrDefault("type", type);
         itemBuilder= (String) jsonObject.getOrDefault("item_builder",itemBuilder);
         shiny= (boolean) jsonObject.getOrDefault("shiny",shiny);
