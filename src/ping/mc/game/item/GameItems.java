@@ -1,9 +1,13 @@
 package ping.mc.game.item;
 
+import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.NBTItem;
+import de.tr7zw.nbtapi.NBTListCompound;
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 import ping.GameAPI;
 import ping.utils.FileUtils;
 
@@ -26,12 +30,22 @@ public class GameItems {
     }
 
     public static ItemStack getItemStack(String ID){
-        ItemStack itemStack = new ItemStack(getItem(ID).getMaterial());
+        GameItemBase itemBase=getItem(ID);
+        ItemStack itemStack = new ItemStack(itemBase.getMaterial());
         NBTItem item=new NBTItem(itemStack);
         item.getOrCreateCompound("Data").setString("id",ID);
+        if (itemStack.getType()== Material.PLAYER_HEAD) {
+            NBTCompound skull = item.addCompound("SkullOwner");
+            skull.setString("Id", "fce0323d-7f50-4317-9720-5f6b14cf78ea");
+            NBTListCompound texture = skull.addCompound("Properties").getCompoundList("textures").addCompound();
+            texture.setString("Value", itemBase.getTexture());
+        }
         itemStack=item.getItem();
         ItemMeta itm=itemStack.getItemMeta();
         assert itm != null;
+        if (itemStack.getType() == Material.LEATHER_HELMET || itemStack.getType() == Material.LEATHER_CHESTPLATE || itemStack.getType() == Material.LEATHER_LEGGINGS || itemStack.getType() == Material.LEATHER_BOOTS){
+            ((LeatherArmorMeta) itm).setColor(itemBase.getColor());
+        }
         itm.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_DESTROYS,ItemFlag.HIDE_DYE,ItemFlag.HIDE_ENCHANTS,ItemFlag.HIDE_PLACED_ON,ItemFlag.HIDE_POTION_EFFECTS,ItemFlag.HIDE_UNBREAKABLE);
         itemStack.setItemMeta(itm);
         return getItemBuilder("default").build(item.getItem());

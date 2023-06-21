@@ -31,6 +31,16 @@ public class GameItemBase {
 
     private List<String> abilities = new ArrayList<>();
     private Color color=Color.MAROON;
+    private String texture="eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTZiYjlmYjk3YmE4N2NiNzI3Y2QwZmY0NzdmNzY5MzcwYmVhMTljY2JmYWZiNTgxNjI5Y2Q1NjM5ZjJmZWMyYiJ9fX0=";
+
+    public String getTexture() {
+        return texture;
+    }
+
+    public GameItemBase setTexture(String texture) {
+        this.texture = texture;
+        return this;
+    }
 
     public Color getColor() {
         return color;
@@ -66,6 +76,7 @@ public class GameItemBase {
         name= (String) jsonObject.getOrDefault("name",name);
         material= Material.valueOf((String) jsonObject.getOrDefault("material", "STICK"));
         description= (String) jsonObject.getOrDefault("description",description);
+        texture= (String) jsonObject.getOrDefault("texture",texture);
         rarity= GameRarities.getRarity((String) jsonObject.getOrDefault("rarity","COMMON"));
         type= (GameType) jsonObject.getOrDefault("type", type);
         itemBuilder= (String) jsonObject.getOrDefault("item_builder",itemBuilder);

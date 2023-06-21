@@ -3,7 +3,6 @@ package ping.mc.game.item;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.LeatherArmorMeta;
 import ping.mc.game.attribute.GameAttribute;
 import ping.mc.game.attribute.GameAttributeModifier;
 import ping.mc.game.attribute.GameAttributes;
@@ -32,7 +31,6 @@ public class DefaultItemBuilder implements GameItemBuilder {
         lore.addAll(abilities(gameItem.getGameItemBase().getAbilities(),itemStack));
         lore.add(typeAndRarity(gameItem));
         itemMeta.setLore(lore);
-        ((LeatherArmorMeta) itemMeta).setColor(gameItem.getGameItemBase().getColor());
         itemStack.setItemMeta(itemMeta);
         return itemStack;
     }
