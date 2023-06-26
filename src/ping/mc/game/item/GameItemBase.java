@@ -21,14 +21,13 @@ public class GameItemBase {
     private Material material=Material.STICK;
     private String name="Default Item";
     private String description =null;
-    private GameRarity rarity=new GameRarity("COMMON");
+    private GameRarity rarity=new GameRarity("COMMON").setEffect("§f").setName("Common").setRank(0);
     private GameType type=new GameType("ITEM").setGameAttributeSlot(GameAttributeSlot.ANY);
     private String itemBuilder="default";
 
     private boolean shiny=false;
     private List<GameAttributeModifier> attributes=new ArrayList<>();
     private List<String> tags = new ArrayList<>();
-
     private List<String> abilities = new ArrayList<>();
     private Color color=Color.MAROON;
     private String texture="eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTZiYjlmYjk3YmE4N2NiNzI3Y2QwZmY0NzdmNzY5MzcwYmVhMTljY2JmYWZiNTgxNjI5Y2Q1NjM5ZjJmZWMyYiJ9fX0=";

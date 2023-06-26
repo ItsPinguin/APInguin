@@ -10,6 +10,7 @@ import ping.mc.game.item.ability.GameAbilityEvents;
 import ping.mc.game.item.type.GameTypes;
 import ping.mc.game.profile.GameProfileEvents;
 import ping.mc.game.rarity.GameRarities;
+import ping.mc.game.rarity.GameRarity;
 
 import java.io.File;
 import java.nio.file.Paths;
@@ -28,6 +29,7 @@ public class GameAPI extends JavaPlugin {
         new File(Config.PROFILES_DIRECTORY).mkdirs();
         GameItems.setItemBuilder("default",new DefaultItemBuilder());
         registerEvents();
+        GameRarities.addRarity(new GameRarity("COMMON"));
         loadAssets();
         LOGGER.info("Plugin enabled!");
     }

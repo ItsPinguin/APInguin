@@ -19,7 +19,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class GameItems {
     private static HashMap<String, GameItemBuilder> itemBuilders=new HashMap<>();
-    private static HashMap<Object, GameItemBase> itemMap = new HashMap<>();
+    private static HashMap<String, GameItemBase> itemMap = new HashMap<>();
 
     public static void addItem(GameItemBase item){
         itemMap.put(item.getId(), item);
@@ -51,7 +51,7 @@ public class GameItems {
         return getItemBuilder("default").build(item.getItem());
     }
 
-    public static HashMap<Object, GameItemBase> getItemMap(){
+    public static HashMap<String, GameItemBase> getItemMap(){
         return itemMap;
     }
 

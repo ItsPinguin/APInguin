@@ -6,10 +6,10 @@ public class GameAbilityInfo {
     private String id="my_id";
     private String name="My Ability";
     private String description="This is the standard ability.";
-    private double manaCost=1;
+    private double manaCost=0;
     private long cooldown=1000;
     private long delay=0;
-    private GameAbilityType abilityType= GameAbilityType.SHIFT_RIGHT_CLICK;
+    private GameAbilityType abilityType= GameAbilityType.RIGHT_CLICK;
 
     public String getId() {
         return id;

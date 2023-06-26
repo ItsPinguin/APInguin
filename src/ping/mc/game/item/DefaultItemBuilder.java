@@ -83,7 +83,13 @@ public class DefaultItemBuilder implements GameItemBuilder {
         for (String ability : abilities) {
             GameAbility ability0=GameAbilities.getAbility(ability);
             assert ability0 != null;
-            lore.add(ability0.getAbilityInfo().getDescription(itemStack));
+            lore.add("§6"+ability0.getAbilityInfo().getName()+" §e§l"+ability0.getAbilityInfo().getAbilityType().toString().replaceAll("_"," "));
+            String descr=ability0.getAbilityInfo().getDescription(itemStack);
+            descr="§7"+descr;
+            descr=descr.replaceAll("\n","\n§7");
+            lore.addAll(List.of(descr.split("\n")));
+            if (ability0.getAbilityInfo().getManaCost()!=0) lore.add("§7Mana Cost: §3");
+            lore.add("");
         }
         return lore;
     }
