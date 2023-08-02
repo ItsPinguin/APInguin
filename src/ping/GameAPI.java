@@ -3,6 +3,7 @@ package ping;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+import ping.addon.GameAddon;
 import ping.mc.game.attribute.GameAttributes;
 import ping.mc.game.item.DefaultItemBuilder;
 import ping.mc.game.item.GameItems;
@@ -14,11 +15,18 @@ import ping.mc.game.rarity.GameRarity;
 
 import java.io.File;
 import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
 public class GameAPI extends JavaPlugin {
     public static Plugin PLUGIN;
     public static Logger LOGGER;
+    public static Map<String,GameAddon> addons=new HashMap<>();
+
+    public static void addAddon(GameAddon addon){
+        addons.put(addon.name, addon);
+    }
     @Override
     public void onEnable() {
         PLUGIN=this;
@@ -31,6 +39,10 @@ public class GameAPI extends JavaPlugin {
         registerEvents();
         GameRarities.addRarity(new GameRarity("COMMON"));
         loadAssets();
+        LOGGER.info("%s addon(s) loaded:".formatted(addons.size()));
+        for (GameAddon value : addons.values()) {
+            LOGGER.info("- "+value.name);
+        }
         LOGGER.info("Plugin enabled!");
     }
 

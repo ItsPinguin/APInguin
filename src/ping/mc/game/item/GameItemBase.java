@@ -58,8 +58,9 @@ public class GameItemBase {
         return shiny;
     }
 
-    public void setShiny(boolean shiny) {
+    public GameItemBase setShiny(boolean shiny) {
         this.shiny = shiny;
+        return this;
     }
 
     public List<String> getAbilities() {
