@@ -8,7 +8,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
-import ping.GameAPI;
+import ping.apinguin.APInguin;
 import ping.utils.FileUtils;
 
 import java.io.IOException;
@@ -19,7 +19,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class GameItems {
     private static HashMap<String, GameItemBuilder> itemBuilders=new HashMap<>();
-    private static HashMap<String, GameItemBase> itemMap = new HashMap<>();
+    public static HashMap<String, GameItemBase> itemMap = new HashMap<>();
 
     public static void addItem(GameItemBase item){
         itemMap.put(item.getId(), item);
@@ -60,7 +60,7 @@ public class GameItems {
             if (path.toFile().isFile() && !path.toString().startsWith(excludePrefix)){
                 addItem(new GameItemBase(FileUtils.readJSONObject(path.toString())));
             } else if (path.toFile().isDirectory() && !path.toString().startsWith(excludePrefix)) {
-                GameAPI.LOGGER.info("Loading items from directory: "+path.toFile());
+                APInguin.LOGGER.info("Loading items from directory: "+path.toFile());
                 AtomicInteger loaded= new AtomicInteger();
                 Files.walk(path).forEach(filePath ->{
                     if (filePath.toFile().isFile()&& !filePath.toString().startsWith(excludePrefix)){
@@ -68,7 +68,7 @@ public class GameItems {
                         loaded.addAndGet(1);
                     }
                 });
-                GameAPI.LOGGER.info("Loaded "+loaded+" items from files");
+                APInguin.LOGGER.info("Loaded "+loaded+" items from files");
             }
         } catch (IOException e) {
             throw new RuntimeException(e);

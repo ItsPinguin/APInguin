@@ -13,13 +13,16 @@ import ping.mc.game.rarity.GameRarities;
 import ping.mc.game.rarity.GameRarity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
 public class GameItemBase {
     private String id="DEFAULT_ITEM";
-    private Material material=Material.STICK;
     private String name="Default Item";
+
+    private HashMap<String,Object> data=new HashMap<>();
+    private Material material=Material.STICK;
     private String description =null;
     private GameRarity rarity=new GameRarity("COMMON").setEffect("§f").setName("Common").setRank(0);
     private GameType type=new GameType("ITEM").setGameAttributeSlot(GameAttributeSlot.ANY);

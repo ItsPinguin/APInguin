@@ -1,6 +1,6 @@
 package ping.mc.game.rarity;
 
-import ping.GameAPI;
+import ping.apinguin.APInguin;
 import ping.utils.FileUtils;
 
 import java.io.IOException;
@@ -39,7 +39,7 @@ public class GameRarities {
                 GameRarity rarity=new GameRarity(FileUtils.readJSONObject(path.toString()));
                 rarities.put(rarity.getId(), rarity);
             } else if (path.toFile().isDirectory() && !path.toString().startsWith(excludePrefix)) {
-                GameAPI.LOGGER.info("Loading rarities from directory: "+path.toFile());
+                APInguin.LOGGER.info("Loading rarities from directory: "+path.toFile());
                 AtomicInteger loaded= new AtomicInteger();
                 Files.walk(path).forEach(filePath ->{
                     if (filePath.toFile().isFile()&& !filePath.toString().startsWith(excludePrefix)){
@@ -48,7 +48,7 @@ public class GameRarities {
                         loaded.addAndGet(1);
                     }
                 });
-                GameAPI.LOGGER.info("Loaded "+loaded+" rarities from files");
+                APInguin.LOGGER.info("Loaded "+loaded+" rarities from files");
             }
         } catch (IOException e) {
             throw new RuntimeException(e);

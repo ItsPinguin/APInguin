@@ -1,4 +1,4 @@
-package ping;
+package ping.apinguin;
 
 public class Config {
     public static String SERVER_NAME="My Server";

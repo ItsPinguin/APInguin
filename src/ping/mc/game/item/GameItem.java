@@ -3,6 +3,8 @@ package ping.mc.game.item;
 import de.tr7zw.nbtapi.NBTItem;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import ping.addon.PingAddon;
+import ping.apinguin.APInguin;
 import ping.mc.game.attribute.GameAttributeModifier;
 
 import java.util.ArrayList;
@@ -20,17 +22,21 @@ public class GameItem {
 
     public GameItem(){}
 
-    public GameItem identify(ItemStack itemStack){
-        this.itemStack=itemStack;
+    public static GameItem identify(ItemStack itemStack){
+        GameItem gameItem=new GameItem();
+        gameItem.itemStack=itemStack;
         if (itemStack==null || itemStack.getType()== Material.AIR || new NBTItem(itemStack).getCompound("Data")==null){
-            return this;
+            return gameItem;
         }
         String ID=new NBTItem(itemStack).getCompound("Data").getString("id");
-        isGameItem= GameItems.getItem(ID) != null;
-        if (isGameItem){
-            gameItemBase=GameItems.getItem(ID);
+        gameItem.isGameItem= GameItems.getItem(ID) != null;
+        if (gameItem.isGameItem){
+            gameItem.gameItemBase=GameItems.getItem(ID);
         }
-        return this;
+        for (PingAddon addon : APInguin.addons) {
+            gameItem=addon.item(gameItem);
+        }
+        return gameItem;
     }
 
     public ItemStack getItemStack() {

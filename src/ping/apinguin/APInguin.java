@@ -1,9 +1,10 @@
-package ping;
+package ping.apinguin;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-import ping.addon.GameAddon;
+import ping.addon.PingAddon;
+import ping.addon.PingAddonEvents;
 import ping.mc.game.attribute.GameAttributes;
 import ping.mc.game.item.DefaultItemBuilder;
 import ping.mc.game.item.GameItems;
@@ -15,34 +16,28 @@ import ping.mc.game.rarity.GameRarity;
 
 import java.io.File;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
-public class GameAPI extends JavaPlugin {
+public class APInguin extends JavaPlugin {
     public static Plugin PLUGIN;
     public static Logger LOGGER;
-    public static Map<String,GameAddon> addons=new HashMap<>();
-
-    public static void addAddon(GameAddon addon){
-        addons.put(addon.name, addon);
+    public static List<PingAddon> addons=new ArrayList<>();
+    @Override
+    public void onLoad(){
+        PLUGIN=this;
+        LOGGER=this.getLogger();
+        loadConfigAndDefaults();
+        loadAssets();
     }
     @Override
     public void onEnable() {
-        PLUGIN=this;
-        LOGGER=this.getLogger();
-        LOGGER.info("Enabling plugin ...");
-        loadConfigAndDefaults();
+        registerEvents();
         new File(Config.PLAYER_PROFILES_DIRECTORY).mkdirs();
         new File(Config.PROFILES_DIRECTORY).mkdirs();
         GameItems.setItemBuilder("default",new DefaultItemBuilder());
-        registerEvents();
         GameRarities.addRarity(new GameRarity("COMMON"));
-        loadAssets();
-        LOGGER.info("%s addon(s) loaded:".formatted(addons.size()));
-        for (GameAddon value : addons.values()) {
-            LOGGER.info("- "+value.name);
-        }
         LOGGER.info("Plugin enabled!");
     }
 
@@ -61,6 +56,7 @@ public class GameAPI extends JavaPlugin {
     public void registerEvents(){
         Bukkit.getPluginManager().registerEvents(new GameAbilityEvents(),this);
         Bukkit.getPluginManager().registerEvents(new GameProfileEvents(),this);
+        Bukkit.getPluginManager().registerEvents(new PingAddonEvents(),this);
     }
 
     public void loadConfigAndDefaults(){

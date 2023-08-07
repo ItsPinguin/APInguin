@@ -10,8 +10,8 @@ import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.event.server.PluginEnableEvent;
 import org.bukkit.scheduler.BukkitRunnable;
-import ping.Config;
-import ping.GameAPI;
+import ping.apinguin.APInguin;
+import ping.apinguin.Config;
 
 public class GameProfileEvents implements Listener {
     @EventHandler
@@ -49,7 +49,7 @@ public class GameProfileEvents implements Listener {
                 GameProfiles.playerProfiles.forEach((uuid, gamePlayerProfile) -> gamePlayerProfile.save());
                 GameProfiles.profiles.forEach((uuid, gameProfile) -> gameProfile.save());
             }
-        }.runTaskTimer(GameAPI.PLUGIN, Config.SAVE_PROFILES_EVERY_X_TICK,Config.SAVE_PROFILES_EVERY_X_TICK);
+        }.runTaskTimer(APInguin.PLUGIN, Config.SAVE_PROFILES_EVERY_X_TICK,Config.SAVE_PROFILES_EVERY_X_TICK);
     }
 
     @EventHandler

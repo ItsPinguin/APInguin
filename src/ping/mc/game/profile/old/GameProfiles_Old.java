@@ -1,6 +1,6 @@
 package ping.mc.game.profile.old;
 
-import ping.Config;
+import ping.apinguin.Config;
 import ping.utils.FileUtils;
 
 import java.util.HashMap;

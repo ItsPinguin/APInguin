@@ -1,6 +1,6 @@
 package ping.mc.game.attribute;
 
-import ping.GameAPI;
+import ping.apinguin.APInguin;
 import ping.utils.FileUtils;
 
 import java.io.IOException;
@@ -32,7 +32,7 @@ public class GameAttributes {
                 GameAttribute attribute=new GameAttribute(FileUtils.readJSONObject(path.toString()));
                 attributes.put(attribute.getId(), attribute);
             } else if (path.toFile().isDirectory() && !path.toString().startsWith(excludePrefix)) {
-                GameAPI.LOGGER.info("Loading attributes from directory: "+path.toFile());
+                APInguin.LOGGER.info("Loading attributes from directory: "+path.toFile());
                 AtomicInteger loaded= new AtomicInteger();
                 Files.walk(path).forEach(filePath ->{
                     if (filePath.toFile().isFile()&& !filePath.toString().startsWith(excludePrefix)){
@@ -41,7 +41,7 @@ public class GameAttributes {
                         loaded.addAndGet(1);
                     }
                 });
-                GameAPI.LOGGER.info("Loaded "+loaded+" attributes from files");
+                APInguin.LOGGER.info("Loaded "+loaded+" attributes from files");
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
