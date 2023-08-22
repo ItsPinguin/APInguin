@@ -17,20 +17,20 @@ public class GameProfileEvents implements Listener {
     @EventHandler
     public void join(PlayerJoinEvent e){
         new GamePlayer(e.getPlayer().getUniqueId()).getCurrentProfile().load(e.getPlayer());
-        new GamePlayer(e.getPlayer().getUniqueId()).updateAttribute();
+        //new GamePlayer(e.getPlayer().getUniqueId()).updateAttribute();
     }
 
     @EventHandler
     public void invClose(InventoryCloseEvent e){
-        new GamePlayer(e.getPlayer().getUniqueId()).updateAttribute();
+        //new GamePlayer(e.getPlayer().getUniqueId()).updateAttribute();
     }
     @EventHandler
     public void handSwap(PlayerSwapHandItemsEvent e){
-        new GamePlayer(e.getPlayer().getUniqueId()).updateAttribute();
+        //new GamePlayer(e.getPlayer().getUniqueId()).updateAttribute();
     }
     @EventHandler
     public void toolChange(PlayerItemHeldEvent e){
-        new GamePlayer(e.getPlayer().getUniqueId()).updateAttribute();
+        //new GamePlayer(e.getPlayer().getUniqueId()).updateAttribute();
     }
 
     @EventHandler

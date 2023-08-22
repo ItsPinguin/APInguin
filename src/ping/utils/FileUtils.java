@@ -122,7 +122,4 @@ public class FileUtils {
         }
     }
 
-    public static void addDefaults(){
-        FileUtils.copy("src/GameMaker","plugins/GameMaker",false);
-    }
 }

@@ -3,13 +3,8 @@ package ping.mc.game.profile;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.json.simple.JSONObject;
-import ping.apinguin.APInguin;
 import ping.apinguin.Config;
 import ping.mc.game.attribute.GameAttribute;
-import ping.mc.game.attribute.GameAttributeModifier;
-import ping.mc.game.attribute.GameAttributeSlot;
-import ping.mc.game.attribute.GameAttributes;
-import ping.mc.game.item.GameItem;
 import ping.utils.FileUtils;
 
 import java.io.File;
@@ -76,7 +71,7 @@ public class GamePlayer implements Serializable {
         return profiles;
     }
 
-    protected double calculateAttribute(String attribute){
+    /*protected double calculateAttribute(String attribute){
         Player player=Bukkit.getPlayer(uuid);
         assert player != null;
         GameItem helmet=new GameItem(player.getInventory().getHelmet());
@@ -100,16 +95,16 @@ public class GamePlayer implements Serializable {
         if (offhandSlot== GameAttributeSlot.OFFHAND || offhandSlot== GameAttributeSlot.ANY)modifiers.addAll(offhand.getAttribute(attribute));
         modifiers.add(new GameAttributeModifier(APInguin.PLUGIN.getConfig().getDouble("attributes."+attribute,0),attribute));
         return GameAttributeModifier.calculate(modifiers);
-    }
-    protected double calculateAttribute(GameAttribute attribute){
+    }*/
+    /*protected double calculateAttribute(GameAttribute attribute){
         return calculateAttribute(attribute.getId());
-    }
+    }*/
 
-    public void updateAttribute(){
+    /*public void updateAttribute(){
         GameAttributes.attributes.values().forEach(attribute -> {
             getCurrentProfile().getOrCreateCompound("attributes").setDouble(attribute.getId(), calculateAttribute(attribute));
         });
-    }
+    }*/
 
     public double getAttribute(String attribute){
         return getCurrentProfile().getOrCreateCompound("attributes").getDouble(attribute);

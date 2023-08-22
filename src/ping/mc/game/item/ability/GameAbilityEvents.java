@@ -6,9 +6,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
-import ping.mc.game.item.GameItem;
-import ping.mc.game.item.GameItemBase;
-import ping.mc.game.profile.GamePlayer;
 
 public class GameAbilityEvents implements Listener {
     @EventHandler
@@ -28,7 +25,7 @@ public class GameAbilityEvents implements Listener {
     }
 
     public static boolean execute(GameAbilityType type, Player player){
-        GameItemBase gameItemBase=new GameItem(player.getInventory().getItemInMainHand()).getGameItemBase();
+        /*GameItemBase gameItemBase=new GameItem(player.getInventory().getItemInMainHand()).getGameItemBase();
         for (String ability : gameItemBase.getAbilities()) {
             GameAbility ability1= GameAbilities.getAbility(ability);
             if (ability1!=null&& ability1.getAbilityInfo().getAbilityType()==type){
@@ -41,6 +38,7 @@ public class GameAbilityEvents implements Listener {
                 return true;
             }
         }
+        return false;*/
         return false;
     }
 }
