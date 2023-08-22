@@ -6,8 +6,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import ping.addon.PingAddon;
 import ping.addon.PingAddonEvents;
 import ping.mc.game.attribute.GameAttributes;
-import ping.mc.game.item.DefaultItemBuilder;
-import ping.mc.game.item.GameItems;
+import ping.mc.game.commands.APInguinCommand;
+import ping.mc.game.item.GameItem;
 import ping.mc.game.item.ability.GameAbilityEvents;
 import ping.mc.game.item.type.GameTypes;
 import ping.mc.game.profile.GameProfileEvents;
@@ -16,14 +16,12 @@ import ping.mc.game.rarity.GameRarity;
 
 import java.io.File;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 import java.util.logging.Logger;
 
 public class APInguin extends JavaPlugin {
     public static Plugin PLUGIN;
     public static Logger LOGGER;
-    public static List<PingAddon> addons=new ArrayList<>();
     @Override
     public void onLoad(){
         PLUGIN=this;
@@ -36,7 +34,7 @@ public class APInguin extends JavaPlugin {
         registerEvents();
         new File(Config.PLAYER_PROFILES_DIRECTORY).mkdirs();
         new File(Config.PROFILES_DIRECTORY).mkdirs();
-        GameItems.setItemBuilder("default",new DefaultItemBuilder());
+        getCommand("apinguin").setExecutor(new APInguinCommand());
         GameRarities.addRarity(new GameRarity("COMMON"));
         LOGGER.info("Plugin enabled!");
     }
@@ -50,7 +48,6 @@ public class APInguin extends JavaPlugin {
         GameAttributes.loadAllFromPath(Paths.get(Config.ATTRIBUTE_LOADING_PATH),"-");
         GameRarities.loadAllFromPath(Paths.get(Config.RARITIES_LOADING_PATH),"-");
         GameTypes.loadAllFromPath(Paths.get(Config.TYPE_LOADING_PATH),"-");
-        GameItems.loadAllFromPath(Paths.get(Config.ITEMS_LOADING_PATH),"-");
     }
 
     public void registerEvents(){
@@ -75,5 +72,10 @@ public class APInguin extends JavaPlugin {
         getConfig().options().copyDefaults(true);
         saveConfig();
         reloadConfig();
+    }
+
+    public static class Registries{
+        public static HashMap<String, PingAddon> ADDONS=new HashMap<>();
+        public static HashMap<String, GameItem> ITEM_BASES=new HashMap<>();
     }
 }
