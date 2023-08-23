@@ -13,11 +13,25 @@ import org.bukkit.scheduler.BukkitRunnable;
 import ping.apinguin.APInguin;
 import ping.apinguin.Config;
 
+import java.util.HashMap;
+
 public class GameProfileEvents implements Listener {
     @EventHandler
     public void join(PlayerJoinEvent e){
-        new GamePlayer(e.getPlayer().getUniqueId()).getCurrentProfile().load(e.getPlayer());
         //new GamePlayer(e.getPlayer().getUniqueId()).updateAttribute();
+        PingProfile  profile=PlayerProfile.get(e.getPlayer().getUniqueId()).getCurrentProfile();
+        profile.getData().put("lastJoin",System.currentTimeMillis());
+        if (profile.getInventories()==null)
+          profile.setInventories(new HashMap<>());
+        e.getPlayer().getInventory().setContents(profile.getInventories().getOrDefault(e.getPlayer().getUniqueId()+"$content",
+            new InventoryHolder(e.getPlayer().getInventory().getContents())
+        ).getItemStacks());
+        e.getPlayer().getInventory().setExtraContents(profile.getInventories().getOrDefault(e.getPlayer().getUniqueId()+"$extra",
+            new InventoryHolder(e.getPlayer().getInventory().getExtraContents())
+        ).getItemStacks());
+        e.getPlayer().getInventory().setArmorContents(profile.getInventories().getOrDefault(e.getPlayer().getUniqueId()+"$armor",
+            new InventoryHolder(e.getPlayer().getInventory().getArmorContents())
+        ).getItemStacks());
     }
 
     @EventHandler
@@ -35,10 +49,14 @@ public class GameProfileEvents implements Listener {
 
     @EventHandler
     public void leave(PlayerQuitEvent e){
-        GamePlayer profile=new GamePlayer(e.getPlayer().getUniqueId());
+      PlayerProfile profile=PlayerProfile.get(e.getPlayer().getUniqueId());
+      profile.getCurrentProfile().getInventories().put(e.getPlayer().getUniqueId()+"$content",new InventoryHolder(e.getPlayer().getInventory().getContents()));
+        profile.getCurrentProfile().getInventories().put(e.getPlayer().getUniqueId()+"$armor",new InventoryHolder(e.getPlayer().getInventory().getArmorContents()));
+        profile.getCurrentProfile().getInventories().put(e.getPlayer().getUniqueId()+"$extra",new InventoryHolder(e.getPlayer().getInventory().getExtraContents()));
+        profile.getCurrentProfile().getData().put("lastQuit",System.currentTimeMillis());
         profile.save();
-        GameProfiles.profiles.remove(profile.getCurrentProfile().uuid);
-        GameProfiles.playerProfiles.remove(profile.uuid);
+        APInguin.Registries.PROFILES.remove(profile.getCurrentProfileId());
+        APInguin.Registries.PLAYER_PROFILES.remove(e.getPlayer().getUniqueId());
     }
 
     @EventHandler
@@ -46,15 +64,13 @@ public class GameProfileEvents implements Listener {
         new BukkitRunnable(){
             @Override
             public void run() {
-                GameProfiles.playerProfiles.forEach((uuid, gamePlayerProfile) -> gamePlayerProfile.save());
-                GameProfiles.profiles.forEach((uuid, gameProfile) -> gameProfile.save());
+                APInguin.Registries.PLAYER_PROFILES.forEach((uuid, gamePlayerProfile) -> gamePlayerProfile.save());
             }
         }.runTaskTimer(APInguin.PLUGIN, Config.SAVE_PROFILES_EVERY_X_TICK,Config.SAVE_PROFILES_EVERY_X_TICK);
     }
 
     @EventHandler
     public void saveAllOnReload(PluginDisableEvent e){
-        GameProfiles.playerProfiles.forEach((uuid, gamePlayerProfile) -> gamePlayerProfile.save());
-        GameProfiles.profiles.forEach((uuid, gameProfile) -> gameProfile.save());
+        APInguin.Registries.PLAYER_PROFILES.forEach((uuid, gamePlayerProfile) -> gamePlayerProfile.save());
     }
 }
