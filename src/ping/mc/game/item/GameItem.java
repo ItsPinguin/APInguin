@@ -24,6 +24,10 @@ public class GameItem {
 
     public GameItem(){}
 
+    public GameItem(GameItem gameItem){
+        data=gameItem.getData();
+    }
+
     public HashMap<String, Object> getData() {
         return data;
     }
@@ -58,6 +62,7 @@ public class GameItem {
         itemStack=item.getItem();
         ItemMeta itm=itemStack.getItemMeta();
         assert itm != null;
+        itm.setDisplayName("§f"+data.get("name"));
         if (itemStack.getType() == Material.LEATHER_HELMET || itemStack.getType() == Material.LEATHER_CHESTPLATE || itemStack.getType() == Material.LEATHER_LEGGINGS || itemStack.getType() == Material.LEATHER_BOOTS){
             ((LeatherArmorMeta) itm).setColor(this.getColor());
         }
