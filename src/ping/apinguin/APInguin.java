@@ -11,12 +11,15 @@ import ping.mc.game.item.GameItem;
 import ping.mc.game.item.ability.GameAbilityEvents;
 import ping.mc.game.item.type.GameTypes;
 import ping.mc.game.profile.GameProfileEvents;
+import ping.mc.game.profile.PingProfile;
+import ping.mc.game.profile.PlayerProfile;
 import ping.mc.game.rarity.GameRarities;
 import ping.mc.game.rarity.GameRarity;
 
 import java.io.File;
 import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 public class APInguin extends JavaPlugin {
@@ -77,5 +80,7 @@ public class APInguin extends JavaPlugin {
     public static class Registries{
         public static HashMap<String, PingAddon> ADDONS=new HashMap<>();
         public static HashMap<String, GameItem> ITEM_BASES=new HashMap<>();
+        public static HashMap<UUID, PlayerProfile> PLAYER_PROFILES=new HashMap<>();
+        public static HashMap<UUID, PingProfile> PROFILES=new HashMap<>();
     }
 }
