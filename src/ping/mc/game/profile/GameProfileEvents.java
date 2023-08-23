@@ -21,7 +21,10 @@ public class GameProfileEvents implements Listener {
         //new GamePlayer(e.getPlayer().getUniqueId()).updateAttribute();
         PingProfile  profile=PlayerProfile.get(e.getPlayer().getUniqueId()).getCurrentProfile();
         profile.getData().put("lastJoin",System.currentTimeMillis());
-        if (profile.getInventories()==null)
+//      JsonObject d = (JsonObject) new Gson().toJsonTree("d");d.asMap();
+//      new Gson().fromJson(d, ItemStack.class);
+
+      if (profile.getInventories()==null)
           profile.setInventories(new HashMap<>());
         e.getPlayer().getInventory().setContents(profile.getInventories().getOrDefault(e.getPlayer().getUniqueId()+"$content",
             new InventoryHolder(e.getPlayer().getInventory().getContents())

@@ -1,12 +1,13 @@
 package ping.mc.game.profile;
 
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.io.BukkitObjectInputStream;
+import org.bukkit.util.io.BukkitObjectOutputStream;
+import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
 
-import java.io.Serial;
-import java.io.Serializable;
+import java.io.*;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 public class InventoryHolder implements Serializable {
@@ -21,39 +22,54 @@ public class InventoryHolder implements Serializable {
   @Serial
   private UUID inventoryKey;
   @Serial
-  private Map<String,Object>[] serialized;
+  private String serialized;
 
   @Override
   public String toString() {
     return "InventoryHolder{" +
-        "itemStacks=" + Arrays.toString(inventories.get(inventoryKey)) +
-        "serialized=" + Arrays.toString(serialized) +
+        "itemStacks=" + Arrays.toString(inventories.get(inventoryKey)) + ", " +
+        "serialized=" + (serialized) +
         '}';
   }
 
   public void serialize(){
     ItemStack[] itemStacks=inventories.get(inventoryKey);
-    serialized=new Map[itemStacks.length];
-    for (int i = 0; i < itemStacks.length; i++) {
-      if (itemStacks[i]!=null) {
-        serialized[i] = itemStacks[i].serialize();
-        if (itemStacks[i].getItemMeta()!=null)
-          serialized[i].put("meta", itemStacks[i].getItemMeta().serialize());
+    try {
+      ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+      BukkitObjectOutputStream dataOutput = new BukkitObjectOutputStream(outputStream);
+
+      // Write the size of the inventory
+      dataOutput.writeInt(itemStacks.length);
+
+      // Save every element in the list
+      for (ItemStack itemStack : itemStacks) {
+        dataOutput.writeObject(itemStack);
       }
+
+      // Serialize that array
+      dataOutput.close();
+      serialized= Base64Coder.encodeLines(outputStream.toByteArray());
+    } catch (Exception e) {
+      throw new IllegalStateException("Unable to save item stacks.", e);
     }
   }
 
   public void deserialize(){
-    ItemStack[] itemStacks=new ItemStack[serialized.length];
-    for (int i = 0; i < serialized.length; i++) {
-      if (serialized[i]!=null) {
-        itemStacks[i]=ItemStack.deserialize(serialized[i]);
-      } else {
-        itemStacks[i]=null;
-      }
-    }
-    inventories.put(inventoryKey,itemStacks);
+    try {
+      ByteArrayInputStream inputStream = new ByteArrayInputStream(Base64Coder.decodeLines(serialized));
+      BukkitObjectInputStream dataInput = new BukkitObjectInputStream(inputStream);
+      ItemStack[] items = new ItemStack[dataInput.readInt()];
 
+      // Read the serialized inventory
+      for (int i = 0; i < items.length; i++) {
+        items[i] = (ItemStack) dataInput.readObject();
+      }
+
+      dataInput.close();
+      inventories.put(inventoryKey,items);
+    } catch (ClassNotFoundException | IOException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   public ItemStack[] getItemStacks() {
