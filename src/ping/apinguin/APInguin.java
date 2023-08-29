@@ -7,6 +7,8 @@ import ping.addon.PingAddon;
 import ping.addon.PingAddonEvents;
 import ping.mc.game.attribute.GameAttributes;
 import ping.mc.game.commands.APInguinCommand;
+import ping.mc.game.drop.DropEvents;
+import ping.mc.game.event.TestEvents;
 import ping.mc.game.item.GameItem;
 import ping.mc.game.item.ability.GameAbilityEvents;
 import ping.mc.game.item.type.GameTypes;
@@ -57,6 +59,8 @@ public class APInguin extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new GameAbilityEvents(),this);
         Bukkit.getPluginManager().registerEvents(new GameProfileEvents(),this);
         Bukkit.getPluginManager().registerEvents(new PingAddonEvents(),this);
+        Bukkit.getPluginManager().registerEvents(new DropEvents(), this);
+        Bukkit.getPluginManager().registerEvents(new TestEvents(), this);
     }
 
     public void loadConfigAndDefaults(){
