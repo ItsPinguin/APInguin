@@ -1,4 +1,4 @@
-package ping.mc.game.profile;
+package ping.mc.game.profile.old;
 
 import de.tr7zw.nbtapi.NBTFile;
 import org.bukkit.entity.Player;

@@ -1,4 +1,4 @@
-package ping.mc.game.profile;
+package ping.mc.game.profile.old;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
