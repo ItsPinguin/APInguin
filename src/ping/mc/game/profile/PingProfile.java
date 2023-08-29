@@ -1,6 +1,5 @@
 package ping.mc.game.profile;
 
-import ping.apinguin.APInguin;
 import ping.apinguin.Config;
 
 import java.io.*;
@@ -8,6 +7,9 @@ import java.util.HashMap;
 import java.util.UUID;
 
 public class PingProfile implements Serializable {
+
+    private static HashMap<UUID, PingProfile> profiles=new HashMap<>();
+
     @Serial
     private UUID profileId;
     @Serial
@@ -16,6 +18,9 @@ public class PingProfile implements Serializable {
     private HashMap<String,Object> data=new HashMap<>();
     @Serial
     private boolean locked=false;
+    public static HashMap<UUID, PingProfile> getProfiles() {
+        return profiles;
+    }
 
     public HashMap<String, InventoryHolder> getInventories() {
         return inventories;
@@ -57,12 +62,12 @@ public class PingProfile implements Serializable {
     }
 
     public void load(){
-        if (APInguin.Registries.PROFILES.get(profileId)==null){
+        if (getProfiles().get(profileId)==null){
             if (!new File(Config.PROFILES_DIRECTORY+profileId).exists()){
-                APInguin.Registries.PROFILES.put(profileId,this);
+                getProfiles().put(profileId,this);
             } else {
                 try {
-                    APInguin.Registries.PROFILES.put(profileId, (PingProfile) new ObjectInputStream(new FileInputStream(Config.PROFILES_DIRECTORY+profileId)).readObject());
+                    getProfiles().put(profileId, (PingProfile) new ObjectInputStream(new FileInputStream(Config.PROFILES_DIRECTORY+profileId)).readObject());
                 } catch (IOException | ClassNotFoundException e) {
                     throw new RuntimeException(e);
                 }
@@ -72,7 +77,7 @@ public class PingProfile implements Serializable {
 
     public static PingProfile get(UUID uuid){
         new PingProfile(uuid);
-        return APInguin.Registries.PROFILES.get(uuid);
+        return getProfiles().get(uuid);
     }
 
     public void save(){
@@ -85,6 +90,6 @@ public class PingProfile implements Serializable {
     }
 
     public void update(){
-        APInguin.Registries.PROFILES.put(profileId,this);
+        getProfiles().put(profileId,this);
     }
 }

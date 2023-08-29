@@ -1,30 +1,26 @@
 package ping.apinguin;
 
 import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import ping.addon.PingAddon;
-import ping.addon.PingAddonEvents;
 import ping.mc.game.attribute.GameAttributes;
-import ping.mc.game.commands.APInguinCommand;
 import ping.mc.game.drop.DropEvents;
 import ping.mc.game.event.TestEvents;
-import ping.mc.game.item.GameItem;
 import ping.mc.game.item.ability.GameAbilityEvents;
 import ping.mc.game.item.type.GameTypes;
-import ping.mc.game.profile.GameProfileEvents;
-import ping.mc.game.profile.PingProfile;
 import ping.mc.game.profile.PlayerProfile;
 import ping.mc.game.rarity.GameRarities;
 import ping.mc.game.rarity.GameRarity;
 
 import java.io.File;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.UUID;
 import java.util.logging.Logger;
 
-public class APInguin extends JavaPlugin {
+public class APInguin extends JavaPlugin implements CommandExecutor {
     public static Plugin PLUGIN;
     public static Logger LOGGER;
     @Override
@@ -39,7 +35,7 @@ public class APInguin extends JavaPlugin {
         registerEvents();
         new File(Config.PLAYER_PROFILES_DIRECTORY).mkdirs();
         new File(Config.PROFILES_DIRECTORY).mkdirs();
-        getCommand("apinguin").setExecutor(new APInguinCommand());
+        getCommand("apinguin").setExecutor(this);
         GameRarities.addRarity(new GameRarity("COMMON"));
         LOGGER.info("Plugin enabled!");
     }
@@ -56,11 +52,12 @@ public class APInguin extends JavaPlugin {
     }
 
     public void registerEvents(){
-        Bukkit.getPluginManager().registerEvents(new GameAbilityEvents(),this);
-        Bukkit.getPluginManager().registerEvents(new GameProfileEvents(),this);
-        Bukkit.getPluginManager().registerEvents(new PingAddonEvents(),this);
+        Bukkit.getPluginManager().registerEvents(new PlayerProfile(),this);
+        Bukkit.getPluginManager().registerEvents(new PingAddon(),this);
         Bukkit.getPluginManager().registerEvents(new DropEvents(), this);
         Bukkit.getPluginManager().registerEvents(new TestEvents(), this);
+
+        Bukkit.getPluginManager().registerEvents(new GameAbilityEvents(),this);
     }
 
     public void loadConfigAndDefaults(){
@@ -81,10 +78,17 @@ public class APInguin extends JavaPlugin {
         reloadConfig();
     }
 
-    public static class Registries{
-        public static HashMap<String, PingAddon> ADDONS=new HashMap<>();
-        public static HashMap<String, GameItem> ITEM_BASES=new HashMap<>();
-        public static HashMap<UUID, PlayerProfile> PLAYER_PROFILES=new HashMap<>();
-        public static HashMap<UUID, PingProfile> PROFILES=new HashMap<>();
+    @Override
+    public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
+        if (strings.length==0){
+            commandSender.sendMessage("§aYou are running §6"+APInguin.PLUGIN.getName()+" §aversion §6"+ APInguin.PLUGIN.getDescription().getVersion());
+            if (PingAddon.getAddons().size()>0){
+                commandSender.sendMessage("§6"+APInguin.PLUGIN.getName()+" §ais using §6"+PingAddon.getAddons().size()+" §aaddon(s):");
+                for (String s1 : PingAddon.getAddons().keySet()) {
+                    commandSender.sendMessage("- §a"+s1);
+                }
+            }
+        }
+        return true;
     }
 }

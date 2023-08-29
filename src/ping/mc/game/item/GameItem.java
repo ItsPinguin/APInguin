@@ -12,12 +12,13 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.json.simple.JSONObject;
 import ping.addon.PingAddon;
-import ping.apinguin.APInguin;
 
 import java.util.HashMap;
 
 public class GameItem {
-    HashMap<String, Object> data = new HashMap<>();
+    private static HashMap<String, GameItem> items=new HashMap<>();
+
+    private HashMap<String, Object> data = new HashMap<>();
 
     public GameItem(ItemStack itemStack){
         data=identify(itemStack).getData();
@@ -27,6 +28,10 @@ public class GameItem {
 
     public GameItem(GameItem gameItem){
         data=gameItem.getData();
+    }
+
+    public static HashMap<String, GameItem> getItems() {
+        return items;
     }
 
     public HashMap<String, Object> getData() {
@@ -41,10 +46,10 @@ public class GameItem {
             return gameItem;
         }
         String id=new NBTItem(itemStack).getCompound("Data").getString("id");
-        if (APInguin.Registries.ITEM_BASES.get(id) != null){
-            gameItem.data=APInguin.Registries.ITEM_BASES.get(id).getData();
+        if (items.get(id) != null){
+            gameItem.data=items.get(id).getData();
         }
-        for (PingAddon addon : APInguin.Registries.ADDONS.values()) {
+        for (PingAddon addon : PingAddon.getAddons().values()) {
             gameItem=addon.getItemAddon().parseWithItemStack(gameItem,itemStack);
         }
         return gameItem;
@@ -72,10 +77,10 @@ public class GameItem {
         }
         itm.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_DESTROYS,ItemFlag.HIDE_DYE,ItemFlag.HIDE_ENCHANTS,ItemFlag.HIDE_PLACED_ON,ItemFlag.HIDE_POTION_EFFECTS,ItemFlag.HIDE_UNBREAKABLE);
         itemStack.setItemMeta(itm);
-        for (PingAddon addon : APInguin.Registries.ADDONS.values()) {
+        for (PingAddon addon : PingAddon.getAddons().values()) {
             itemStack=addon.getItemAddon().constructItem(this, itemStack);
         }
-        for (PingAddon addon : APInguin.Registries.ADDONS.values()) {
+        for (PingAddon addon : PingAddon.getAddons().values()) {
             itemStack=addon.getItemAddon().buildItemDisplay(this, itemStack);
         }
         return itemStack;
