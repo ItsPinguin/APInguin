@@ -6,15 +6,15 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-import ping.addon.PingAddon;
-import ping.mc.game.attribute.GameAttributes;
-import ping.mc.game.drop.DropEvents;
-import ping.mc.game.event.TestEvents;
-import ping.mc.game.item.ability.GameAbilityEvents;
-import ping.mc.game.item.type.GameTypes;
-import ping.mc.game.profile.PlayerProfile;
-import ping.mc.game.rarity.GameRarities;
-import ping.mc.game.rarity.GameRarity;
+import ping.apinguin.addon.PingAddon;
+import ping.apinguin.game.attribute.GameAttributes;
+import ping.apinguin.game.drop.PingDrop;
+import ping.apinguin.game.event.TestEvents;
+import ping.apinguin.game.item.ability.GameAbilityEvents;
+import ping.apinguin.game.item.type.GameTypes;
+import ping.apinguin.game.profile.PlayerProfile;
+import ping.apinguin.game.rarity.GameRarities;
+import ping.apinguin.game.rarity.GameRarity;
 
 import java.io.File;
 import java.nio.file.Paths;
@@ -54,7 +54,7 @@ public class APInguin extends JavaPlugin implements CommandExecutor {
     public void registerEvents(){
         Bukkit.getPluginManager().registerEvents(new PlayerProfile(),this);
         Bukkit.getPluginManager().registerEvents(new PingAddon(),this);
-        Bukkit.getPluginManager().registerEvents(new DropEvents(), this);
+        Bukkit.getPluginManager().registerEvents(new PingDrop(), this);
         Bukkit.getPluginManager().registerEvents(new TestEvents(), this);
 
         Bukkit.getPluginManager().registerEvents(new GameAbilityEvents(),this);
