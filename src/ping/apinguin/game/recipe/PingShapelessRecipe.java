@@ -9,23 +9,23 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class PingGroundRecipe {
-  private static HashMap<String,PingGroundRecipe> recipes=new HashMap<>();
+public class PingShapelessRecipe {
+  private static HashMap<String, PingShapelessRecipe> recipes=new HashMap<>();
   private final String id;
   private HashMap<PingItem, Integer> input=new HashMap<>();
   private HashMap<PingItem, Integer> output=new HashMap<>();
   private String tableId;
 
-  public PingGroundRecipe(String id) {
+  public PingShapelessRecipe(String id) {
     this.id=id;
     recipes.put(id,this);
   }
 
-  public static HashMap<String, PingGroundRecipe> getRecipes() {
+  public static HashMap<String, PingShapelessRecipe> getRecipes() {
     return recipes;
   }
 
-  public static void setRecipes(HashMap<String, PingGroundRecipe> recipes) {
+  public static void setRecipes(HashMap<String, PingShapelessRecipe> recipes) {
     recipes = recipes;
   }
 
@@ -37,12 +37,12 @@ public class PingGroundRecipe {
     return input;
   }
 
-  public PingGroundRecipe addInput(PingItem pingItem, int amount) {
+  public PingShapelessRecipe addInput(PingItem pingItem, int amount) {
     input.put(pingItem, amount);
     return this;
   }
 
-  public PingGroundRecipe addInput(PingItem pingItem){
+  public PingShapelessRecipe addInput(PingItem pingItem){
     addInput(pingItem,1);
     return this;
   }
@@ -51,12 +51,12 @@ public class PingGroundRecipe {
     return output;
   }
 
-  public PingGroundRecipe addOutput(PingItem pingItem, int amount) {
+  public PingShapelessRecipe addOutput(PingItem pingItem, int amount) {
     output.put(pingItem, amount);
     return this;
   }
 
-  public PingGroundRecipe addOutput(PingItem pingItem){
+  public PingShapelessRecipe addOutput(PingItem pingItem){
     addOutput(pingItem,1);
     return this;
   }
@@ -65,7 +65,7 @@ public class PingGroundRecipe {
     return tableId;
   }
 
-  public PingGroundRecipe setTableId(String tableId) {
+  public PingShapelessRecipe setTableId(String tableId) {
     this.tableId = tableId;
     return this;
   }
