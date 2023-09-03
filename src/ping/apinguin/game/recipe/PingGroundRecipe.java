@@ -1,4 +1,4 @@
-package ping.apinguin.recipe;
+package ping.apinguin.game.recipe;
 
 import org.bukkit.inventory.ItemStack;
 import ping.apinguin.game.item.PingItem;
@@ -10,7 +10,7 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class PingGroundRecipe {
-  private HashMap<String,PingGroundRecipe> recipes=new HashMap<>();
+  private static HashMap<String,PingGroundRecipe> recipes=new HashMap<>();
   private final String id;
   private HashMap<PingItem, Integer> input=new HashMap<>();
   private HashMap<PingItem, Integer> output=new HashMap<>();
@@ -21,12 +21,12 @@ public class PingGroundRecipe {
     recipes.put(id,this);
   }
 
-  public HashMap<String, PingGroundRecipe> getRecipes() {
+  public static HashMap<String, PingGroundRecipe> getRecipes() {
     return recipes;
   }
 
-  public void setRecipes(HashMap<String, PingGroundRecipe> recipes) {
-    this.recipes = recipes;
+  public static void setRecipes(HashMap<String, PingGroundRecipe> recipes) {
+    recipes = recipes;
   }
 
   public String getId() {
@@ -37,32 +37,37 @@ public class PingGroundRecipe {
     return input;
   }
 
-  public void addInput(PingItem pingItem, int amount) {
+  public PingGroundRecipe addInput(PingItem pingItem, int amount) {
     input.put(pingItem, amount);
+    return this;
   }
 
-  public void addInput(PingItem pingItem){
+  public PingGroundRecipe addInput(PingItem pingItem){
     addInput(pingItem,1);
+    return this;
   }
 
   public HashMap<PingItem, Integer> getOutput() {
     return output;
   }
 
-  public void addOutput(PingItem pingItem, int amount) {
+  public PingGroundRecipe addOutput(PingItem pingItem, int amount) {
     output.put(pingItem, amount);
+    return this;
   }
 
-  public void addOutput(PingItem pingItem){
+  public PingGroundRecipe addOutput(PingItem pingItem){
     addOutput(pingItem,1);
+    return this;
   }
 
   public String getTableId() {
     return tableId;
   }
 
-  public void setTableId(String tableId) {
+  public PingGroundRecipe setTableId(String tableId) {
     this.tableId = tableId;
+    return this;
   }
 
   public boolean canCraft(List<ItemStack> input){

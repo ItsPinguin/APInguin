@@ -1,4 +1,4 @@
-package ping.apinguin.recipe;
+package ping.apinguin.game.recipe;
 
 import net.minecraft.world.entity.Display;
 
