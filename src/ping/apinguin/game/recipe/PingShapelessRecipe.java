@@ -70,7 +70,10 @@ public class PingShapelessRecipe {
     return this;
   }
 
-  public boolean canCraft(List<ItemStack> input){
+  public boolean canCraft(List<ItemStack> input, String id){
+    if (!id.equalsIgnoreCase(tableId)){
+      return false;
+    }
     AtomicBoolean correct= new AtomicBoolean(false);
     this.getInput().keySet().forEach( pingItem -> {
       correct.set(false);
