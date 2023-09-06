@@ -1,7 +1,9 @@
 package ping.apinguin.game.recipe;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.ItemDisplay;
@@ -18,26 +20,27 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class PingRecipeBlock {
-  private static HashMap<String, PingRecipeBlock> recipeBlocks=new HashMap<>();
+public class PingCraftingTable {
+  private static HashMap<String, PingCraftingTable> recipeBlocks=new HashMap<>();
   private static HashMap<Location, String> placedRecipeBlocks=new HashMap<>();
 
   private final String id;
 
   private Material material=Material.BARRIER;
   private String texture;
-  public PingRecipeBlock(String id) {
+  public PingCraftingTable(String id) {
     this.id = id;
     recipeBlocks.put(id,this);
   }
 
-  public static HashMap<String, PingRecipeBlock> getRecipeBlocks() {
+  public static HashMap<String, PingCraftingTable> getRecipeBlocks() {
     return recipeBlocks;
   }
 
-  public static void setRecipeBlocks(HashMap<String, PingRecipeBlock> recipeBlocks) {
-    PingRecipeBlock.recipeBlocks = recipeBlocks;
+  public static void setRecipeBlocks(HashMap<String, PingCraftingTable> recipeBlocks) {
+    PingCraftingTable.recipeBlocks = recipeBlocks;
   }
 
   public String getId() {
@@ -48,7 +51,7 @@ public class PingRecipeBlock {
     return material;
   }
 
-  public PingRecipeBlock setMaterial(Material material) {
+  public PingCraftingTable setMaterial(Material material) {
     this.material = material;
     return this;
   }
@@ -57,7 +60,7 @@ public class PingRecipeBlock {
     return texture;
   }
 
-  public PingRecipeBlock setTexture(String texture) {
+  public PingCraftingTable setTexture(String texture) {
     this.texture = texture;
     return this;
   }
@@ -67,7 +70,7 @@ public class PingRecipeBlock {
   }
 
   public static void setPlacedRecipeBlocks(HashMap<Location, String> placedRecipeBlocks) {
-    PingRecipeBlock.placedRecipeBlocks = placedRecipeBlocks;
+    PingCraftingTable.placedRecipeBlocks = placedRecipeBlocks;
   }
 
   public static void load(){
@@ -76,7 +79,14 @@ public class PingRecipeBlock {
       if (!new File("plugins/APInguin/data/placedRecipeBlocks").exists()){
         new File("plugins/APInguin/data/placedRecipeBlocks").createNewFile();
       }
-      placedRecipeBlocks= ((HashMap<Location, String>) new ObjectInputStream(new FileInputStream("plugins/APInguin/data/placedRecipeBlocks")).readObject());
+      HashMap<Map<String,Object>, String> toDeserialize= (HashMap<Map<String, Object>, String>) new ObjectInputStream(new FileInputStream("plugins/APInguin/data/placedRecipeBlocks")).readObject();
+
+      placedRecipeBlocks= new HashMap<>();
+
+      toDeserialize.keySet().forEach(key -> {
+        key.put("world", Bukkit.getWorld(((String) key.get("world"))));
+        placedRecipeBlocks.put(Location.deserialize(key),toDeserialize.get(key));
+      });
     } catch (IOException | ClassNotFoundException e) {
       throw new RuntimeException(e);
     }
@@ -85,7 +95,13 @@ public class PingRecipeBlock {
   public static void save(){
     try {
       new File("plugins/APInguin/data").mkdirs();
-      new ObjectOutputStream(new FileOutputStream("plugins/APInguin/data/placedRecipeBlocks")).writeObject(placedRecipeBlocks);
+      HashMap<Map<String,Object>, String> serialize=new HashMap<>();
+      placedRecipeBlocks.keySet().forEach(location -> {
+        Map<String, Object> loc=location.serialize();
+        loc.put("world", ((World) loc.get("world")).getName());
+        serialize.put(location.serialize(),placedRecipeBlocks.get(location));
+      });
+      new ObjectOutputStream(new FileOutputStream("plugins/APInguin/data/placedRecipeBlocks")).writeObject(serialize);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }

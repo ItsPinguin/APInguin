@@ -15,7 +15,7 @@ import ping.apinguin.game.item.type.GameTypes;
 import ping.apinguin.game.profile.PlayerProfile;
 import ping.apinguin.game.rarity.GameRarities;
 import ping.apinguin.game.rarity.GameRarity;
-import ping.apinguin.game.recipe.PingRecipeBlock;
+import ping.apinguin.game.recipe.PingCraftingTable;
 
 import java.io.File;
 import java.nio.file.Paths;
@@ -30,7 +30,7 @@ public class APInguin extends JavaPlugin implements CommandExecutor {
         LOGGER=this.getLogger();
         loadConfigAndDefaults();
         loadAssets();
-        PingRecipeBlock.load();
+        PingCraftingTable.load();
     }
     @Override
     public void onEnable() {
@@ -44,7 +44,7 @@ public class APInguin extends JavaPlugin implements CommandExecutor {
 
     @Override
     public void onDisable() {
-        PingRecipeBlock.save();
+        PingCraftingTable.save();
         LOGGER.info("Plugin disabled!");
     }
 
