@@ -4,29 +4,31 @@ import java.nio.file.Path;
 import java.util.HashMap;
 
 public class GameTypes {
-    static HashMap<String, GameType> types=new HashMap<>();
-    private static GameTypeBuilder typeBuilder=new GameTypeBuilder() {
-        @Override
-        public String build(GameType type) {
-            return GameTypeBuilder.super.build(type);
-        }
-    };
-    public static void addType(GameType type){
-        types.put(type.getId(), type);
+  static HashMap<String, GameType> types = new HashMap<>();
+  private static GameTypeBuilder typeBuilder = new GameTypeBuilder() {
+    @Override
+    public String build(GameType type) {
+      return GameTypeBuilder.super.build(type);
     }
-    public static GameType getType(String key){
-        return types.get(key);
-    }
+  };
 
-    public static GameTypeBuilder getTypeBuilder() {
-        return typeBuilder;
-    }
+  public static void addType(GameType type) {
+    types.put(type.getId(), type);
+  }
 
-    public static void setTypeBuilder(GameTypeBuilder typeBuilder) {
-        GameTypes.typeBuilder = typeBuilder;
-    }
+  public static GameType getType(String key) {
+    return types.get(key);
+  }
 
-    public static void loadAllFromPath(Path path, String excludePrefix){
+  public static GameTypeBuilder getTypeBuilder() {
+    return typeBuilder;
+  }
+
+  public static void setTypeBuilder(GameTypeBuilder typeBuilder) {
+    GameTypes.typeBuilder = typeBuilder;
+  }
+
+  public static void loadAllFromPath(Path path, String excludePrefix) {
         /*try {
             if (path.toFile().isFile() && !path.toString().startsWith(excludePrefix)){
                 GameType type=new GameType(FileUtils.readJSONObject(path.toString()));
@@ -46,5 +48,5 @@ public class GameTypes {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }*/
-    }
+  }
 }

@@ -8,88 +8,89 @@ import java.util.UUID;
 
 public class PingProfile implements Serializable {
 
-    private static HashMap<UUID, PingProfile> profiles=new HashMap<>();
+  private static HashMap<UUID, PingProfile> profiles = new HashMap<>();
 
-    @Serial
-    private UUID profileId;
-    @Serial
-    private HashMap<String,InventoryHolder> inventories=new HashMap<>();
-    @Serial
-    private HashMap<String,Object> data=new HashMap<>();
-    @Serial
-    private boolean locked=false;
-    public static HashMap<UUID, PingProfile> getProfiles() {
-        return profiles;
-    }
+  @Serial
+  private UUID profileId;
+  @Serial
+  private HashMap<String, InventoryHolder> inventories = new HashMap<>();
+  @Serial
+  private HashMap<String, Object> data = new HashMap<>();
+  @Serial
+  private boolean locked = false;
 
-    public HashMap<String, InventoryHolder> getInventories() {
-        return inventories;
-    }
+  public static HashMap<UUID, PingProfile> getProfiles() {
+    return profiles;
+  }
 
-    public void setInventories(HashMap<String, InventoryHolder> inventories) {
-        this.inventories = inventories;
-    }
+  public HashMap<String, InventoryHolder> getInventories() {
+    return inventories;
+  }
 
-    public HashMap<String, Object> getData() {
-        return data;
-    }
+  public void setInventories(HashMap<String, InventoryHolder> inventories) {
+    this.inventories = inventories;
+  }
 
-    public void setData(HashMap<String, Object> data) {
-        this.data = data;
-    }
+  public HashMap<String, Object> getData() {
+    return data;
+  }
 
-    public boolean isLocked() {
-        return locked;
-    }
+  public void setData(HashMap<String, Object> data) {
+    this.data = data;
+  }
 
-    public void setLocked(boolean locked) {
-        this.locked = locked;
-    }
+  public boolean isLocked() {
+    return locked;
+  }
 
-    private PingProfile(UUID uuid) {
-        profileId=uuid;
-        load();
-    }
+  public void setLocked(boolean locked) {
+    this.locked = locked;
+  }
 
-    @Override
-    public String toString() {
-        return "PingProfile{" +
-                "profileId=" + profileId +
-                ", inventories=" + inventories +
-                ", data=" + data +
-                ", locked=" + locked +
-                '}';
-    }
+  private PingProfile(UUID uuid) {
+    profileId = uuid;
+    load();
+  }
 
-    public void load(){
-        if (getProfiles().get(profileId)==null){
-            if (!new File(Config.PROFILES_DIRECTORY+profileId).exists()){
-                getProfiles().put(profileId,this);
-            } else {
-                try {
-                    getProfiles().put(profileId, (PingProfile) new ObjectInputStream(new FileInputStream(Config.PROFILES_DIRECTORY+profileId)).readObject());
-                } catch (IOException | ClassNotFoundException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }
-    }
+  @Override
+  public String toString() {
+    return "PingProfile{" +
+        "profileId=" + profileId +
+        ", inventories=" + inventories +
+        ", data=" + data +
+        ", locked=" + locked +
+        '}';
+  }
 
-    public static PingProfile get(UUID uuid){
-        new PingProfile(uuid);
-        return getProfiles().get(uuid);
-    }
-
-    public void save(){
+  public void load() {
+    if (getProfiles().get(profileId) == null) {
+      if (!new File(Config.PROFILES_DIRECTORY + profileId).exists()) {
+        getProfiles().put(profileId, this);
+      } else {
         try {
-          new File(Config.PROFILES_DIRECTORY+profileId).createNewFile();
-          new ObjectOutputStream(new FileOutputStream(Config.PROFILES_DIRECTORY+profileId)).writeObject(this);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+          getProfiles().put(profileId, (PingProfile) new ObjectInputStream(new FileInputStream(Config.PROFILES_DIRECTORY + profileId)).readObject());
+        } catch (IOException | ClassNotFoundException e) {
+          throw new RuntimeException(e);
         }
+      }
     }
+  }
 
-    public void update(){
-        getProfiles().put(profileId,this);
+  public static PingProfile get(UUID uuid) {
+    new PingProfile(uuid);
+    return getProfiles().get(uuid);
+  }
+
+  public void save() {
+    try {
+      new File(Config.PROFILES_DIRECTORY + profileId).createNewFile();
+      new ObjectOutputStream(new FileOutputStream(Config.PROFILES_DIRECTORY + profileId)).writeObject(this);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
     }
+  }
+
+  public void update() {
+    getProfiles().put(profileId, this);
+  }
 }

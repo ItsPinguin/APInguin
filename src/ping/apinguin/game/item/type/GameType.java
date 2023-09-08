@@ -8,56 +8,57 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GameType {
-    String name="Item";
-    String id="ITEM";
-    List<String> tags=new ArrayList<>();
-    GameAttributeSlot gameAttributeSlot=GameAttributeSlot.ANY;
+  String name = "Item";
+  String id = "ITEM";
+  List<String> tags = new ArrayList<>();
+  GameAttributeSlot gameAttributeSlot = GameAttributeSlot.ANY;
 
-    public GameType(String id) {
-        this.id=id;
-    }
-    public GameType(JSONObject jsonObject) {
-        id= (String) jsonObject.getOrDefault("id","ITEM");
-        name= (String) jsonObject.getOrDefault("name","Type");
-        gameAttributeSlot= GameAttributeSlot.valueOf((String) jsonObject.getOrDefault("slot","ANY"));
-        if (jsonObject.get("tags")!=null){
-            JSONArray tagList= (JSONArray) jsonObject.get("tags");
-            tags.addAll(tagList);
-        }
-    }
+  public GameType(String id) {
+    this.id = id;
+  }
 
-    public GameType(String name, String id) {
-        this.name = name;
-        this.id = id;
+  public GameType(JSONObject jsonObject) {
+    id = (String) jsonObject.getOrDefault("id", "ITEM");
+    name = (String) jsonObject.getOrDefault("name", "Type");
+    gameAttributeSlot = GameAttributeSlot.valueOf((String) jsonObject.getOrDefault("slot", "ANY"));
+    if (jsonObject.get("tags") != null) {
+      JSONArray tagList = (JSONArray) jsonObject.get("tags");
+      tags.addAll(tagList);
     }
+  }
 
-    public String getName() {
-        return name;
-    }
+  public GameType(String name, String id) {
+    this.name = name;
+    this.id = id;
+  }
 
-    public GameType setName(String name) {
-        this.name = name;
-        return this;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public String getId() {
-        return id;
-    }
+  public GameType setName(String name) {
+    this.name = name;
+    return this;
+  }
 
-    public List<String> getTags() {
-        return tags;
-    }
+  public String getId() {
+    return id;
+  }
 
-    public void setTags(List<String> tags) {
-        this.tags = tags;
-    }
+  public List<String> getTags() {
+    return tags;
+  }
 
-    public GameAttributeSlot getGameAttributeSlot() {
-        return gameAttributeSlot;
-    }
+  public void setTags(List<String> tags) {
+    this.tags = tags;
+  }
 
-    public GameType setGameAttributeSlot(GameAttributeSlot gameAttributeSlot) {
-        this.gameAttributeSlot = gameAttributeSlot;
-        return this;
-    }
+  public GameAttributeSlot getGameAttributeSlot() {
+    return gameAttributeSlot;
+  }
+
+  public GameType setGameAttributeSlot(GameAttributeSlot gameAttributeSlot) {
+    this.gameAttributeSlot = gameAttributeSlot;
+    return this;
+  }
 }

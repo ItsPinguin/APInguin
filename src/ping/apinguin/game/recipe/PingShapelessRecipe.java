@@ -10,15 +10,15 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class PingShapelessRecipe {
-  private static HashMap<String, PingShapelessRecipe> recipes=new HashMap<>();
+  private static HashMap<String, PingShapelessRecipe> recipes = new HashMap<>();
   private final String id;
-  private HashMap<PingItem, Integer> input=new HashMap<>();
-  private HashMap<PingItem, Integer> output=new HashMap<>();
+  private HashMap<PingItem, Integer> input = new HashMap<>();
+  private HashMap<PingItem, Integer> output = new HashMap<>();
   private String tableId;
 
   public PingShapelessRecipe(String id) {
-    this.id=id;
-    recipes.put(id,this);
+    this.id = id;
+    recipes.put(id, this);
   }
 
   public static HashMap<String, PingShapelessRecipe> getRecipes() {
@@ -42,8 +42,8 @@ public class PingShapelessRecipe {
     return this;
   }
 
-  public PingShapelessRecipe addInput(PingItem pingItem){
-    addInput(pingItem,1);
+  public PingShapelessRecipe addInput(PingItem pingItem) {
+    addInput(pingItem, 1);
     return this;
   }
 
@@ -56,8 +56,8 @@ public class PingShapelessRecipe {
     return this;
   }
 
-  public PingShapelessRecipe addOutput(PingItem pingItem){
-    addOutput(pingItem,1);
+  public PingShapelessRecipe addOutput(PingItem pingItem) {
+    addOutput(pingItem, 1);
     return this;
   }
 
@@ -70,15 +70,15 @@ public class PingShapelessRecipe {
     return this;
   }
 
-  public boolean canCraft(List<ItemStack> input, String id){
-    if (!id.equalsIgnoreCase(tableId)){
+  public boolean canCraft(List<ItemStack> input, String id) {
+    if (!id.equalsIgnoreCase(tableId)) {
       return false;
     }
-    AtomicBoolean correct= new AtomicBoolean(false);
-    this.getInput().keySet().forEach( pingItem -> {
+    AtomicBoolean correct = new AtomicBoolean(false);
+    this.getInput().keySet().forEach(pingItem -> {
       correct.set(false);
-      input.forEach( it ->{
-        if(Objects.equals(new PingItem(it).getId(), pingItem.getId()) && this.getInput().get(pingItem) <= it.getAmount()){
+      input.forEach(it -> {
+        if (Objects.equals(new PingItem(it).getId(), pingItem.getId()) && this.getInput().get(pingItem) <= it.getAmount()) {
           correct.set(true);
         }
       });
@@ -86,15 +86,15 @@ public class PingShapelessRecipe {
     return correct.get();
   }
 
-  public List<ItemStack> craft(List<ItemStack> input){
+  public List<ItemStack> craft(List<ItemStack> input) {
     getInput().keySet().forEach(pingItem -> {
       input.forEach(itemStack -> {
-        if (Objects.equals(new PingItem(itemStack).getId(), pingItem.getId()) && itemStack.getAmount()>= getInput().get(pingItem)){
-          itemStack.setAmount(itemStack.getAmount()- getInput().get(pingItem));
+        if (Objects.equals(new PingItem(itemStack).getId(), pingItem.getId()) && itemStack.getAmount() >= getInput().get(pingItem)) {
+          itemStack.setAmount(itemStack.getAmount() - getInput().get(pingItem));
         }
       });
     });
-    List<ItemStack> output=new ArrayList<>();
+    List<ItemStack> output = new ArrayList<>();
     output.addAll(input);
     getOutput().keySet().forEach(pingItem -> {
       output.add(pingItem.toItemStack());

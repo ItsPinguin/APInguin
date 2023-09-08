@@ -11,11 +11,11 @@ import java.util.HashMap;
 import java.util.UUID;
 
 public class InventoryHolder implements Serializable {
-  private static HashMap<UUID, ItemStack[]> inventories=new HashMap<>();
+  private static HashMap<UUID, ItemStack[]> inventories = new HashMap<>();
 
   public InventoryHolder(ItemStack[] inventory) {
-    inventoryKey=UUID.randomUUID();
-    inventories.put(inventoryKey,inventory);
+    inventoryKey = UUID.randomUUID();
+    inventories.put(inventoryKey, inventory);
     serialize();
   }
 
@@ -32,8 +32,8 @@ public class InventoryHolder implements Serializable {
         '}';
   }
 
-  public void serialize(){
-    ItemStack[] itemStacks=inventories.get(inventoryKey);
+  public void serialize() {
+    ItemStack[] itemStacks = inventories.get(inventoryKey);
     try {
       ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
       BukkitObjectOutputStream dataOutput = new BukkitObjectOutputStream(outputStream);
@@ -48,13 +48,13 @@ public class InventoryHolder implements Serializable {
 
       // Serialize that array
       dataOutput.close();
-      serialized= Base64Coder.encodeLines(outputStream.toByteArray());
+      serialized = Base64Coder.encodeLines(outputStream.toByteArray());
     } catch (Exception e) {
       throw new IllegalStateException("Unable to save item stacks.", e);
     }
   }
 
-  public void deserialize(){
+  public void deserialize() {
     try {
       ByteArrayInputStream inputStream = new ByteArrayInputStream(Base64Coder.decodeLines(serialized));
       BukkitObjectInputStream dataInput = new BukkitObjectInputStream(inputStream);
@@ -66,7 +66,7 @@ public class InventoryHolder implements Serializable {
       }
 
       dataInput.close();
-      inventories.put(inventoryKey,items);
+      inventories.put(inventoryKey, items);
     } catch (ClassNotFoundException | IOException e) {
       throw new RuntimeException(e);
     }

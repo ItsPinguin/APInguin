@@ -4,30 +4,31 @@ import java.nio.file.Path;
 import java.util.HashMap;
 
 public class GameRarities {
-    private static GameRarityBuilder rarityBuilder=new GameRarityBuilder() {
-        @Override
-        public String build(GameRarity rarity) {
-            return GameRarityBuilder.super.build(rarity);
-        }
-    };
-    static HashMap<String, GameRarity> rarities=new HashMap<>();
-    public static void addRarity(GameRarity rarity){
-        rarities.put(rarity.getId(), rarity);
+  private static GameRarityBuilder rarityBuilder = new GameRarityBuilder() {
+    @Override
+    public String build(GameRarity rarity) {
+      return GameRarityBuilder.super.build(rarity);
     }
+  };
+  static HashMap<String, GameRarity> rarities = new HashMap<>();
 
-    public static GameRarity getRarity(String key){
-        return rarities.get(key);
-    }
+  public static void addRarity(GameRarity rarity) {
+    rarities.put(rarity.getId(), rarity);
+  }
 
-    public static GameRarityBuilder getRarityBuilder() {
-        return rarityBuilder;
-    }
+  public static GameRarity getRarity(String key) {
+    return rarities.get(key);
+  }
 
-    public static void setRarityBuilder(GameRarityBuilder rarityBuilder) {
-        GameRarities.rarityBuilder = rarityBuilder;
-    }
+  public static GameRarityBuilder getRarityBuilder() {
+    return rarityBuilder;
+  }
 
-    public static void loadAllFromPath(Path path, String excludePrefix){
+  public static void setRarityBuilder(GameRarityBuilder rarityBuilder) {
+    GameRarities.rarityBuilder = rarityBuilder;
+  }
+
+  public static void loadAllFromPath(Path path, String excludePrefix) {
         /*try {
             if (path.toFile().isFile() && !path.toString().startsWith(excludePrefix)){
                 GameRarity rarity=new GameRarity(FileUtils.readJSONObject(path.toString()));
@@ -47,5 +48,5 @@ public class GameRarities {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }*/
-    }
+  }
 }
