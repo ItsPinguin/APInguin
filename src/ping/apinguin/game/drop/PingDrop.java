@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Item;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -171,8 +172,10 @@ public class PingDrop implements Listener {
     }
     if (BLOCK_DROPS.get(e.getBlock().getType()) != null) {
       BLOCK_DROPS.get(e.getBlock().getType()).forEach(drop -> {
-        /*Item item= e.getBlock().getWorld().dropItem(e.getBlock().getLocation(), drop.drop(e.getPlayer()));
-        item.setOwner(e.getPlayer().getUniqueId());*/
+        Context context=new Context();
+        context.set("block.breaker",e.getPlayer());
+        Item item= e.getBlock().getWorld().dropItem(e.getBlock().getLocation(), drop.drop(context));
+        item.setOwner(e.getPlayer().getUniqueId());
       });
     }
   }
@@ -197,9 +200,12 @@ public class PingDrop implements Listener {
     }
     if (ENTITY_DROPS.get(e.getEntity().getType()) != null) {
       ENTITY_DROPS.get(e.getEntity().getType()).forEach(drop -> {
-        /*Item item= e.getEntity().getWorld().dropItem(e.getEntity().getLocation(), drop.drop(e.getEntity().getKiller(), null, e.getEntity()));
+        Context context=new Context();
+        context.set("attack.victim",e.getEntity());
+        context.set("attack.attacker",e.getEntity());
+        Item item= e.getEntity().getWorld().dropItem(e.getEntity().getLocation(), drop.drop(context));
         if (e.getEntity().getKiller()!=null)
-          item.setOwner(e.getEntity().getKiller().getUniqueId());*/
+          item.setOwner(e.getEntity().getKiller().getUniqueId());
       });
     }
   }
