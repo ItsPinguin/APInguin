@@ -18,12 +18,6 @@ public class PingAddonHandler implements Listener {
   @EventHandler
   public void load(PluginEnableEvent e) {
     boolean allPluginsLoaded = true;
-    for (Plugin loadedPlugin : Bukkit.getPluginManager().getPlugins()) {
-      if (!loadedPlugin.isEnabled()) {
-        allPluginsLoaded = false;
-        break;
-      }
-    }
     if (allPluginsLoaded) {
       for (Plugin plugin : Bukkit.getPluginManager().getPlugins()) {
         if (plugin instanceof PingAddon addon) {

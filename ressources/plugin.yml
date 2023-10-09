@@ -13,3 +13,5 @@ depend:
 commands:
   apinguin:
     description: APInguin's command
+    permission: apinguin
+    permission-message: §cYou are not permitted to use this command!

@@ -45,6 +45,8 @@ public class PingItem {
     gameItem.getData().put("gameItem", true);
     if (itemStack == null || itemStack.getType() == Material.AIR || new NBTItem(itemStack).getCompound("Data") == null) {
       gameItem.getData().put("gameItem", false);
+      gameItem.getData().put("id", "unknown");
+      gameItem.getData().put("name", "Unknown");
       return gameItem;
     }
     String id = new NBTItem(itemStack).getCompound("Data").getString("id");

@@ -24,12 +24,14 @@ public class PingCraftingTable {
   private static HashMap<Location, String> placedRecipeBlocks = new HashMap<>();
 
   private final String id;
+  private String name;
 
   private Material material = Material.BARRIER;
   private String texture;
 
   public PingCraftingTable(String id) {
     this.id = id;
+    name=id;
     recipeBlocks.put(id, this);
   }
 
@@ -71,6 +73,15 @@ public class PingCraftingTable {
     PingCraftingTable.placedRecipeBlocks = placedRecipeBlocks;
   }
 
+  public String getName() {
+    return name;
+  }
+
+  public PingCraftingTable setName(String name) {
+    this.name = name;
+    return this;
+  }
+
   public static void load() {
     try {
       new File("plugins/APInguin/data").mkdirs();
@@ -105,7 +116,7 @@ public class PingCraftingTable {
     }
   }
 
-  public static void attemptCraft(Location loc, @Nullable Player player) {
+  public static boolean attemptCraft(Location loc, @Nullable Player player) {
     Location loc2 = loc.clone();
     if (getPlacedRecipeBlocks().get(loc) != null && getRecipeBlocks().get(getPlacedRecipeBlocks().get(loc)) != null) {
       List<Item> input = new ArrayList<>();
@@ -120,7 +131,9 @@ public class PingCraftingTable {
       if (!input.isEmpty()) {
         getRecipeBlocks().get(getPlacedRecipeBlocks().get(loc)).craft(loc2, player, input);
       }
+      return true;
     }
+    return false;
   }
 
   public void craft(Location loc, @Nullable Player player, List<Item> input) {
@@ -144,26 +157,32 @@ public class PingCraftingTable {
     attemptRemove(loc);
     loc.getBlock().setType(getMaterial());
     if (getTexture() != null) {
-      ItemDisplay itemDisplay = loc.getWorld().spawn(loc.clone(), ItemDisplay.class);
+      ItemDisplay itemDisplay = loc.getWorld().spawn(loc.clone().add(0.5,1,0.5), ItemDisplay.class);
       itemDisplay.setItemStack(new PingItem("NULL", false).setMaterial(Material.PLAYER_HEAD).setTexture(getTexture()).toItemStack());
-      itemDisplay.setTransformation(new Transformation(new Vector3f(0.5f, 1, 0.5f), new AxisAngle4f(), new Vector3f(2, 2, 2), new AxisAngle4f()));
+      itemDisplay.setTransformation(new Transformation(new Vector3f(0,0,0), new AxisAngle4f(), new Vector3f(2, 2, 2), new AxisAngle4f()));
     }
     getPlacedRecipeBlocks().put(loc, this.getId());
   }
 
-  public static void attemptRemove(Location loc) {
+  public static boolean attemptRemove(Location loc) {
     if (getPlacedRecipeBlocks().get(loc) != null && getRecipeBlocks().get(getPlacedRecipeBlocks().get(loc)) != null) {
       getRecipeBlocks().get(getPlacedRecipeBlocks().get(loc)).remove(loc);
       getPlacedRecipeBlocks().remove(loc);
+      return true;
     }
+    return false;
   }
 
   public void remove(Location loc) {
     loc.getBlock().setType(Material.AIR);
     loc.getWorld().getEntities().forEach(entity -> {
-      if (entity instanceof ItemDisplay itemDisplay && itemDisplay.getLocation().distance(loc.clone()) < 0.1) {
+      if (entity instanceof ItemDisplay itemDisplay && itemDisplay.getLocation().distance(loc.clone().add(0.5,1,0.5)) < 0.1) {
         entity.remove();
       }
     });
+  }
+
+  public static boolean isCraftingTable(Location loc){
+    return getPlacedRecipeBlocks().get(loc) != null && getRecipeBlocks().get(getPlacedRecipeBlocks().get(loc)) != null;
   }
 }

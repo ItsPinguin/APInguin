@@ -1,5 +1,6 @@
-package ping.apinguin.game.profile;
+package ping.apinguin.game.profile.old;
 
+import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
@@ -99,11 +100,12 @@ public class PlayerProfile implements Serializable, Listener {
 
   @EventHandler
   public void login(AsyncPlayerPreLoginEvent e) {
-    PlayerProfile.get(e.getUniqueId()).getCurrentProfile();
+    PingPlayer.load(Bukkit.getOfflinePlayer(e.getUniqueId()));
+    //PlayerProfile.get(e.getUniqueId()).getCurrentProfile();
   }
 
   @EventHandler
-  public void join(PlayerJoinEvent e) {
+  public void join(PlayerJoinEvent e) {/*
     //new GamePlayer(e.getPlayer().getUniqueId()).updateAttribute();
     PingProfile profile = PlayerProfile.get(e.getPlayer().getUniqueId()).getCurrentProfile();
     profile.getData().put("lastJoin", System.currentTimeMillis());
@@ -120,10 +122,16 @@ public class PlayerProfile implements Serializable, Listener {
     e.getPlayer().getInventory().setArmorContents(profile.getInventories().getOrDefault(e.getPlayer().getUniqueId() + "$armor",
         new InventoryHolder(e.getPlayer().getInventory().getArmorContents())
     ).getItemStacks());
+    */
+    PingPlayer profile = PingPlayer.get(e.getPlayer());
+    profile.getCurrentProfile().put("last_join", System.currentTimeMillis());
+    e.getPlayer().getInventory().setContents(profile.getItems("inventory"));
+    e.getPlayer().getInventory().setExtraContents(profile.getItems("extra"));
+    e.getPlayer().getInventory().setArmorContents(profile.getItems("armor"));
   }
 
   @EventHandler
-  public void leave(PlayerQuitEvent e) {
+  public void leave(PlayerQuitEvent e) {/*
     PlayerProfile profile = PlayerProfile.get(e.getPlayer().getUniqueId());
     profile.getCurrentProfile().getInventories().put(e.getPlayer().getUniqueId() + "$content", new InventoryHolder(e.getPlayer().getInventory().getContents()));
     profile.getCurrentProfile().getInventories().put(e.getPlayer().getUniqueId() + "$armor", new InventoryHolder(e.getPlayer().getInventory().getArmorContents()));
@@ -132,6 +140,14 @@ public class PlayerProfile implements Serializable, Listener {
     profile.save();
     PingProfile.getProfiles().remove(profile.getCurrentProfileId());
     PlayerProfile.getPlayerProfiles().remove(e.getPlayer().getUniqueId());
+    */
+    PingPlayer profile = PingPlayer.get(e.getPlayer());
+    profile.setItems("inventory",e.getPlayer().getInventory().getContents());
+    profile.setItems("extra",e.getPlayer().getInventory().getExtraContents());
+    profile.setItems("armor",e.getPlayer().getInventory().getArmorContents());
+    profile.getCurrentProfile().put("last_leave", System.currentTimeMillis());
+    profile.save();
+    profile.unload();
   }
 
   @EventHandler
@@ -139,13 +155,15 @@ public class PlayerProfile implements Serializable, Listener {
     new BukkitRunnable() {
       @Override
       public void run() {
-        PlayerProfile.getPlayerProfiles().forEach((uuid, gamePlayerProfile) -> gamePlayerProfile.save());
+        //PlayerProfile.getPlayerProfiles().forEach((uuid, gamePlayerProfile) -> gamePlayerProfile.save());
+        PingPlayer.getLoadedProfiles().values().forEach(profile -> profile.save());
       }
     }.runTaskTimerAsynchronously(APInguin.PLUGIN, Config.SAVE_PROFILES_EVERY_X_TICK, Config.SAVE_PROFILES_EVERY_X_TICK);
   }
 
   @EventHandler
   public void saveAllOnReload(PluginDisableEvent e) {
-    PlayerProfile.getPlayerProfiles().forEach((uuid, gamePlayerProfile) -> gamePlayerProfile.save());
+    //PlayerProfile.getPlayerProfiles().forEach((uuid, gamePlayerProfile) -> gamePlayerProfile.save());
+    PingPlayer.getLoadedProfiles().values().forEach(profile -> profile.save());
   }
 }

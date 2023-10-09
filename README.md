@@ -21,3 +21,11 @@ Create methods are used to create items, recipes, drops.
 Handler methods are used for handling certain part of the API.
 
 ### Create Methods
+Create methods are processed in this order:
+- create items
+- create recipes
+- create drops
+
+If you're searching how to create one of the objects, check in the object's section.
+### Handler Methods
+In `PingAddon`, you can find `#getItemHandler`,`#getConditionHandler` and `#getDropHandler`. 

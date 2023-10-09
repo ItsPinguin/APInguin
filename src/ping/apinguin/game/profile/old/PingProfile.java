@@ -1,4 +1,4 @@
-package ping.apinguin.game.profile;
+package ping.apinguin.game.profile.old;
 
 import ping.apinguin.Config;
 
@@ -50,16 +50,6 @@ public class PingProfile implements Serializable {
   private PingProfile(UUID uuid) {
     profileId = uuid;
     load();
-  }
-
-  @Override
-  public String toString() {
-    return "PingProfile{" +
-        "profileId=" + profileId +
-        ", inventories=" + inventories +
-        ", data=" + data +
-        ", locked=" + locked +
-        '}';
   }
 
   public void load() {

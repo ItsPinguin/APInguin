@@ -1,4 +1,4 @@
-package ping.apinguin.game.profile;
+package ping.apinguin.game.profile.old;
 
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.io.BukkitObjectInputStream;

@@ -23,13 +23,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="spigot-1.19.2-R0.1-SNAPSHOT" level="project" />
-    <orderEntry type="library" name="spigot-api-1.19.2-R0.1-SNAPSHOT" level="project" />
-    <orderEntry type="library" name="nbtapi2" level="project" />
-    <orderEntry type="library" name="NoteBlockAPI-1.6.1-SNAPSHOT" level="project" />
-    <orderEntry type="library" name="json-simple-1.1.1" level="project" />
     <orderEntry type="library" name="StructureBlockLib" level="project" />
-    <orderEntry type="library" name="PlayerProfiles-1.1-SNAPSHOT" level="project" />
     <orderEntry type="library" name="PinguinSpigot-1.20.1" level="project" />
     <orderEntry type="library" name="NBTAPI" level="project" />
   </component>

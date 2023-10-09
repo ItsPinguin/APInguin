@@ -1,48 +1,88 @@
 package ping.apinguin.game.drop;
 
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Item;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import ping.apinguin.APInguin;
-import ping.apinguin.addon.PingAddonHandler;
+import ping.apinguin.events.drop.DropEvent;
 import ping.apinguin.game.condition.Condition;
+import ping.apinguin.game.condition.Context;
 import ping.apinguin.game.item.PingItem;
 
-import javax.annotation.Nullable;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class PingDrop implements Listener {
-  private final Material id;
+  private final Material material;
+  private final EntityType entityType;
+  private final UUID uuid=UUID.randomUUID();
   private String item;
   private int minimum = 1;
   private int maximum = 1;
-  private int chance = 100;
+  private double chance = 100;
   private Condition conditions= new Condition();
 
   public Condition getConditions() {
     return conditions;
   }
 
-  public PingDrop(Material id) {
-    this.id = id;
+  public PingDrop(Material id, boolean updates) {
+    this.material = id;
+    entityType=null;
+    if (updates)
+      update();
+  }
+
+  public PingDrop(Material material){
+    this.material = material;
+    entityType=null;
+    update();
+  }
+
+  public PingDrop(EntityType entityType, boolean updates){
+    this.entityType=entityType;
+    this.material=null;
+    if (updates)
+      update();
+  }
+
+  public PingDrop(EntityType entityType){
+    this.entityType=entityType;
+    this.material=null;
+    update();
+  }
+
+  private void update(){
+    if (material!=null) {
+      List<PingDrop> list = BLOCK_DROPS.getOrDefault(this.material, new ArrayList<>());
+      list.removeIf(drop -> {
+        return drop.uuid == uuid;
+      });
+      list.add(this);
+      BLOCK_DROPS.put(this.material, list);
+    } else if (entityType!=null){
+      List<PingDrop> list = ENTITY_DROPS.getOrDefault(this.entityType, new ArrayList<>());
+      list.removeIf(drop -> {
+        return drop.uuid == uuid;
+      });
+      list.add(this);
+      ENTITY_DROPS.put(this.entityType, list);
+    }
   }
 
   public PingDrop() {
-    this.id = Material.AIR;
+    this.material = null;
+    entityType=null;
   }
 
-  public Material getId() {
-    return id;
+  public Material getMaterial() {
+    return material;
   }
 
   public String getPingItem() {
@@ -77,7 +117,7 @@ public class PingDrop implements Listener {
     return this;
   }
 
-  public int getChance() {
+  public double  getChance() {
     return chance;
   }
 
@@ -86,9 +126,8 @@ public class PingDrop implements Listener {
     return this;
   }
 
-  public ItemStack drop(@Nullable Player p) {
-    if (!conditions.check(p,this))
-      return new ItemStack(Material.AIR);
+  public ItemStack drop(Context context){
+    if (!conditions.check(context)) return new ItemStack(Material.AIR);
     ItemStack itemStack = new PingItem(item).toItemStack();
     AtomicInteger amount= new AtomicInteger();
     if (minimum < maximum)
@@ -97,20 +136,11 @@ public class PingDrop implements Listener {
       amount.set(maximum);
     if (minimum > maximum)
       amount.set(maximum);
-    PingAddonHandler.getAddons().values().forEach(addon -> amount.set(addon.getDropHandler().handleAmount(this, amount.get())));
     itemStack.setAmount(amount.get());
+    DropEvent event = new DropEvent(this, context);
+    Bukkit.getPluginManager().callEvent(event);
+    if (event.isCancelled()) return new ItemStack(Material.AIR);
     return itemStack;
-  }
-
-  public boolean check(@Nullable Player p) {
-    if (new Random().nextInt(0, 100) <= chance) {
-      return customCheck(p);
-    }
-    return false;
-  }
-
-  public boolean customCheck(@Nullable Player p) {
-    return true;
   }
 
   /***
@@ -141,8 +171,8 @@ public class PingDrop implements Listener {
     }
     if (BLOCK_DROPS.get(e.getBlock().getType()) != null) {
       BLOCK_DROPS.get(e.getBlock().getType()).forEach(drop -> {
-        Item item= e.getBlock().getWorld().dropItem(e.getBlock().getLocation(), drop.drop(e.getPlayer()));
-        item.setOwner(e.getPlayer().getUniqueId());
+        /*Item item= e.getBlock().getWorld().dropItem(e.getBlock().getLocation(), drop.drop(e.getPlayer()));
+        item.setOwner(e.getPlayer().getUniqueId());*/
       });
     }
   }
@@ -167,9 +197,9 @@ public class PingDrop implements Listener {
     }
     if (ENTITY_DROPS.get(e.getEntity().getType()) != null) {
       ENTITY_DROPS.get(e.getEntity().getType()).forEach(drop -> {
-        Item item= e.getEntity().getWorld().dropItem(e.getEntity().getLocation(), drop.drop(e.getEntity().getKiller()));
+        /*Item item= e.getEntity().getWorld().dropItem(e.getEntity().getLocation(), drop.drop(e.getEntity().getKiller(), null, e.getEntity()));
         if (e.getEntity().getKiller()!=null)
-          item.setOwner(e.getEntity().getKiller().getUniqueId());
+          item.setOwner(e.getEntity().getKiller().getUniqueId());*/
       });
     }
   }
@@ -183,8 +213,20 @@ public class PingDrop implements Listener {
   }
 
   //STATIC PART
-  static HashMap<Material, List<PingDrop>> BLOCK_DROPS = new HashMap<>();
-  static HashMap<EntityType, List<PingDrop>> ENTITY_DROPS = new HashMap<>();
+  private static HashMap<Material, List<PingDrop>> BLOCK_DROPS = new HashMap<>();
+  private static HashMap<EntityType, List<PingDrop>> ENTITY_DROPS = new HashMap<>();
+  private static PingDrop.DropProfile DROP_PROFILE = PingDrop.DropProfile.valueOf(APInguin.PLUGIN.getConfig().getString("drops.profile", "BOTH"));
 
-  static PingDrop.DropProfile DROP_PROFILE = PingDrop.DropProfile.valueOf(APInguin.PLUGIN.getConfig().getString("drops.profile", "BOTH"));
+
+  public static HashMap<Material, List<PingDrop>> getBlockDrops() {
+    return BLOCK_DROPS;
+  }
+
+  public static HashMap<EntityType, List<PingDrop>> getEntityDrops() {
+    return ENTITY_DROPS;
+  }
+
+  public static DropProfile getDropProfile() {
+    return DROP_PROFILE;
+  }
 }

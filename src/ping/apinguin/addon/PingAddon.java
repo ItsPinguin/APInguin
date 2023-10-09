@@ -1,27 +1,30 @@
 package ping.apinguin.addon;
 
-public interface PingAddon {
-  default void createItems() {
+import org.bukkit.inventory.ItemStack;
+
+import java.util.HashMap;
+
+public abstract class PingAddon {
+  public void createItems() {
   }
 
-  default void createRecipes() {
+  public void createRecipes() {
   }
 
-  default void createDrops() {
+  public void createDrops() {
   }
 
-  default PingItemHandler getItemHandler() {
-    return new PingItemHandler() {
-    };
-  }
+  public ItemHandler getItemHandler() {
+    return new ItemHandler() {
+      @Override
+      public void prepareItemStack(HashMap<String, Object> data) {
 
-  default PingConditionHandler getConditionHandler() {
-    return new PingConditionHandler() {
-    };
-  }
+      }
 
-  default PingDropHandler getDropHandler(){
-    return new PingDropHandler() {
+      @Override
+      public void buildItemStack(ItemStack itemStack, HashMap<String, Object> data) {
+
+      }
     };
   }
 }
